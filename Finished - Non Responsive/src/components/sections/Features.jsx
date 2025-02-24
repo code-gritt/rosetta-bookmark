@@ -24,7 +24,6 @@ export default function Features() {
             <p className="mb-8 text-5xl font-semibold tracking-tighter">
               Smart Organization
             </p>
-
             <p className="text-primary-100 z-1 text-xl/loose font-light">
               Automatically categorize and tag your notes using AI-driven
               analysis. NoteFlow intelligently identifies key topics and
