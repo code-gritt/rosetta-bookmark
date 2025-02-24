@@ -11,6 +11,7 @@ export default function FAQ() {
 
   const handleQuestionClick = (id) =>
     id === activeQuestion ? setActiveQuestion(null) : setActiveQuestion(id);
+
   const handleCategoryClick = (category) => {
     setActiveQuestion(null);
     setActiveCategory(category);

@@ -6,7 +6,7 @@ export default function Navigation() {
   const { setActiveModal } = UseModalContext();
 
   return (
-    <nav className="text-primary-50 m-auto flex max-w-[90rem] justify-between px-24 text-lg font-light">
+    <nav className="text-primary-50 m-auto flex max-w-[90rem] justify-between px-24 text-lg font-light transition-all duration-300">
       <a className="flex items-center gap-x-4" href="#">
         <Logo
           className="stroke-primary-500 h-6"

@@ -68,7 +68,6 @@ export default function FAQQuestions({
               alt="Caret Up Icon"
             />
           </button>
-
           <motion.p
             className="text-primary-100 pt-0 pr-14 pl-20 text-lg/8 font-light"
             initial={{ opacity: 0, maxHeight: 0, visibility: "hidden" }}

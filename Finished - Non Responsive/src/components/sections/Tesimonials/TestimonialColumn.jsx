@@ -8,8 +8,8 @@ export default function TestimonialColumn({ testimonials }) {
         <motion.li
           key={test.name}
           className="bg-primary-1300 rounded-2xl px-8 py-10"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: "100%" }}
           transition={{
             opacity: { duration: 0.5, ease: "easeInOut" },

@@ -27,7 +27,7 @@ export default function Testimonials() {
           animate={{
             height: expanded ? "2976px" : "1128px",
           }}
-          transition={{ duration: expanded ? 2 : 0.5, ease: "easeOut" }}
+          transition={{ duration: expanded ? 1.5 : 0.5, ease: "easeOut" }}
         >
           <TestimonialColumn testimonials={test.slice(0, expanded ? 5 : 2)} />
           <TestimonialColumn testimonials={test.slice(5, expanded ? 10 : 7)} />

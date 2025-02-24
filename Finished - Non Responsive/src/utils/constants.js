@@ -487,23 +487,31 @@ const footerCols = [
   },
 ];
 
-// const features = [
-//   {
-//     alt: "Smart Organization graphic",
-//     heading: "Smart Organization",
-//     description:
-//       "Automatically categorize and tag your notes using AI-driven analysis. \
-//       NoteFlow intelligently identifies key topics and organizes your content, \
-//       making it easy to find and retrieve your notes when you need them most.",
-//   },
-//   {
-//     alt: "Contextual Reminders graphic",
-//     heading: "Contextual Reminders",
-//     description:
-//       "Stay on top of important tasks with AI-powered reminders that adapt to the \
-//       context of your notes. NoteFlow recognizes deadlines, follow-ups, and key actions \
-//       from your notes and sends timely alerts to ensure nothing slips through the cracks.",
-//   },
-// ];
+const features = {
+  SmartOrganization: {
+    alt: "Smart Organization graphic",
+    heading: "Smart Organization",
+    description:
+      "Automatically categorize and tag your notes using AI-driven analysis. \
+      NoteFlow intelligently identifies key topics and organizes your content, \
+      making it easy to find and retrieve your notes when you need them most.",
+  },
+  ContextualReminders: {
+    alt: "Contextual Reminders graphic",
+    heading: "Contextual Reminders",
+    description:
+      "Stay on top of important tasks with AI-powered reminders that adapt to the \
+      context of your notes. NoteFlow recognizes deadlines, follow-ups, and key actions \
+      from your notes and sends timely alerts to ensure nothing slips through the cracks.",
+  },
+};
 
-export { navigationLinks, reviews, logos, FAQs, testimonials, footerCols };
+export {
+  navigationLinks,
+  reviews,
+  logos,
+  FAQs,
+  testimonials,
+  footerCols,
+  features,
+};
