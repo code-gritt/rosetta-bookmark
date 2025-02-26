@@ -17,7 +17,7 @@ export default function FAQQuestions({
 
   return (
     <motion.ul
-      className="m-auto flex max-w-[51.625rem] flex-col gap-y-14"
+      className="m-auto flex max-w-[51.625rem] flex-col gap-y-14 max-lg:gap-y-12"
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       key={category}
@@ -56,7 +56,7 @@ export default function FAQQuestions({
               />
             </div>
 
-            <p className="text-primary-50 mr-auto text-left text-xl/loose font-medium tracking-tight">
+            <p className="text-primary-50 mr-auto text-left text-xl/loose font-medium tracking-tight max-lg:text-lg/8 max-lg:font-semibold">
               {question.question}
             </p>
             <div className="flex h-12 w-12 items-center justify-center">
@@ -70,7 +70,7 @@ export default function FAQQuestions({
             </div>
           </button>
           <motion.p
-            className="text-primary-100 pt-0 pr-14 pl-20 text-lg/8 font-light"
+            className="text-primary-100 pt-0 pr-14 pl-20 text-lg/8 font-light max-lg:text-base/loose"
             initial={{ opacity: 0, maxHeight: 0, visibility: "hidden" }}
             animate={
               activeQuestion === question.id

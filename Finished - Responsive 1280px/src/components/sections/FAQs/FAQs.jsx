@@ -19,11 +19,11 @@ export default function FAQ() {
 
   return (
     <section className="bg-gradient-to-bottom justify-items-center">
-      <div className="w-full max-w-[90rem] pt-36 pb-32">
-        <h2 className="text-primary-50 mb-8 text-center text-6xl/18 font-semibold tracking-tighter">
+      <div className="w-full max-w-[90rem] pt-36 pb-32 max-xl:px-16 max-xl:pt-28 max-xl:pb-24">
+        <h2 className="text-primary-50 mb-8 text-center text-6xl/18 font-semibold tracking-tighter max-xl:mb-6 max-xl:text-5xl/16">
           Frequently Asked Questions
         </h2>
-        <div className="mb-20">
+        <div className="mb-20 max-xl:mb-16">
           <p className="text-primary-100 text-center text-xl/loose font-light">
             The most commonly asked questions about NoteFlow.
           </p>
@@ -40,7 +40,7 @@ export default function FAQ() {
         <ul className="mb-16 flex justify-center gap-x-4 gap-y-4">
           {FAQs.map((obj) => (
             <button
-              className={`border-primary-50 text-primary-50 transition-properties cursor-pointer rounded-full border-2 px-8 py-4 text-lg ${
+              className={`border-primary-50 text-primary-50 transition-properties cursor-pointer rounded-full border-2 px-8 py-4 text-lg/8 max-xl:px-6 max-xl:py-3 max-xl:text-base/loose ${
                 obj.category === category &&
                 "bg-primary-500 text-primary-1300 border-primary-500 primary-glow"
               } ${obj.category !== category && "hover:bg-primary-50 hover:text-primary-1300"}`}
