@@ -38,16 +38,17 @@ export default function FAQ() {
         </div>
         <ul className="mb-16 flex flex-wrap justify-center gap-x-3 gap-y-4 max-lg:mb-18 max-md:justify-start">
           {FAQs.map((obj) => (
-            <button
-              className={`border-primary-50 text-primary-50 transition-properties cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 max-xl:px-6 max-xl:text-base/loose max-sm:py-3 ${
-                obj.category === category &&
-                "bg-primary-500 text-primary-1300 border-primary-500 primary-glow"
-              } ${obj.category !== category && "hover:bg-primary-50 hover:text-primary-1300"}`}
-              key={obj.id}
-              onClick={() => handleCategoryClick(obj.category)}
-            >
-              {obj.category}
-            </button>
+            <li key={obj.id}>
+              <button
+                className={`border-primary-50 text-primary-50 transition-properties cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 max-xl:px-6 max-xl:text-base/loose max-sm:py-3 ${
+                  obj.category === category &&
+                  "bg-primary-500 text-primary-1300 border-primary-500 primary-glow"
+                } ${obj.category !== category && "hover:bg-primary-50 hover:text-primary-1300"}`}
+                onClick={() => handleCategoryClick(obj.category)}
+              >
+                {obj.category}
+              </button>
+            </li>
           ))}
         </ul>
         <FAQQuestions
