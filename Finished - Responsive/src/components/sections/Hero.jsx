@@ -24,7 +24,7 @@ export default function Hero() {
           <div className="w-5 max-xl:w-4 max-sm:hidden">
             <ArrowRightLine
               alt="Arrow right line"
-              className="stroke-primary-1300 transition-properties -mr-3 inline w-0 ease-in-out group-hover:w-3"
+              className="stroke-primary-1300 transition-properties -mr-3 inline w-0 opacity-0 ease-in-out group-hover:w-3 group-hover:opacity-100"
               width={2.5}
             />
             <ArrowRight
