@@ -13,7 +13,7 @@ export default function Reviews() {
           />
         ))}
       </ul>
-      <p className="text-primary-100 text-xl max-xl:text-lg/8 max-lg:text-base/loose">
+      <p className="text-primary-100 text-xl/loose font-light max-lg:text-base/loose">
         Trusted by{" "}
         <span className="text-primary-500 font-bold tracking-tighter">
           12,653+{" "}

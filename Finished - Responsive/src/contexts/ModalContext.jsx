@@ -12,8 +12,8 @@ function ModalContextProvider({ children }) {
   );
 }
 
-function UseModalContext() {
+function useModalContext() {
   return useContext(ModalContext);
 }
 
-export { UseModalContext, ModalContextProvider };
+export { useModalContext, ModalContextProvider };

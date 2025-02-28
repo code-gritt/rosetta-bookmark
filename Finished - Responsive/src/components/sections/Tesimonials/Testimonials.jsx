@@ -30,7 +30,7 @@ export default function Testimonials() {
           />
         </div>
         <button
-          className="text-primary-50 outline-primary-50 transition-properties hover:bg-primary-50 hover:text-primary-1300 group flex cursor-pointer items-center gap-x-3 rounded-full px-8 py-4 text-lg/8 outline-2 max-xl:px-6 max-xl:py-3 max-xl:text-base/loose"
+          className="text-primary-50 border-primary-50 transition-properties hover:bg-primary-50 hover:text-primary-1300 group flex cursor-pointer items-center gap-x-3 rounded-full border-2 px-8 py-3.5 text-lg/8 max-xl:px-6 max-xl:py-3 max-xl:text-base/loose"
           onClick={() => setExpanded((curr) => !curr)}
         >
           {expanded ? "Show less" : "Show more"}

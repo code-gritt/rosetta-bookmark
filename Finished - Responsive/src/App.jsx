@@ -22,27 +22,35 @@ import Modal from "./components/sections/Modal/Modal";
 import SignUpModal from "./components/sections/Modal/SignUpModal";
 import { ModalContextProvider } from "./contexts/ModalContext";
 
+// Mobile Menu
+import MobileMenu from "./components/sections/MobileMenu/MobileMenu";
+import { MobileMenuContextProvider } from "./contexts/MobileMenuContext";
+
 function App() {
   return (
     <ModalContextProvider>
-      <Page>
-        <Header>
-          <Navigation />
-          <Hero />
-          <Reviews />
-        </Header>
-        <Main>
-          <Logos />
-          <Features />
-          <FAQ />
-          <Testimonials />
-        </Main>
-        <Footer />
+      <MobileMenuContextProvider>
+        <Page>
+          <Header>
+            <Navigation />
+            <Hero />
+            <Reviews />
+          </Header>
+          <Main>
+            <Logos />
+            <Features />
+            <FAQ />
+            <Testimonials />
+          </Main>
+          <Footer />
 
-        <Modal modal="sign-up">
-          <SignUpModal />
-        </Modal>
-      </Page>
+          <Modal modal="sign-up">
+            <SignUpModal />
+          </Modal>
+
+          <MobileMenu />
+        </Page>
+      </MobileMenuContextProvider>
     </ModalContextProvider>
   );
 }

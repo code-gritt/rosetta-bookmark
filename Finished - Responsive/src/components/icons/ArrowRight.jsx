@@ -6,18 +6,11 @@ export default function ArrowRight({ width = 1.5, className, alt }) {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      alt={alt}
       className={className}
+      alt={alt}
     >
       <path
-        d="M14.4301 5.93005L20.5001 12.0001L14.4301 18.0701"
-        strokeWidth={width}
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3.5 12H20.33"
+        d="M8.91 19.797L15.43 13.277C16.2 12.507 16.2 11.247 15.43 10.477L8.91 3.95703"
         strokeWidth={width}
         strokeMiterlimit="10"
         strokeLinecap="round"

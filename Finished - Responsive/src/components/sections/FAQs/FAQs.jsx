@@ -19,11 +19,11 @@ export default function FAQ() {
 
   return (
     <section className="bg-gradient-to-bottom justify-items-center">
-      <div className="w-full max-w-[90rem] pt-36 pb-32 max-xl:px-16 max-xl:pt-28 max-xl:pb-24 max-lg:px-8 max-lg:pt-24 max-md:px-6">
+      <div className="w-full max-w-[90rem] py-32 max-xl:px-16 max-xl:py-24 max-lg:px-8 max-md:px-6">
         <h2 className="text-primary-50 mb-8 text-center text-6xl/18 font-semibold tracking-tighter max-xl:mb-6 max-xl:text-5xl/16 max-lg:text-4xl/10 max-lg:tracking-tight max-md:mb-4 max-md:text-left max-sm:text-3xl/9 max-sm:tracking-tighter">
           Frequently Asked Questions
         </h2>
-        <div className="mb-20 text-xl/loose font-light max-xl:mb-16 max-lg:mb-10 max-lg:text-lg/8 max-sm:text-base/loose">
+        <div className="mb-8 text-xl/loose font-light max-lg:text-lg/8 max-sm:text-base/loose">
           <p className="text-primary-100 text-center max-md:text-left max-sm:hidden">
             The most commonly asked questions about NoteFlow.{" "}
             <br className="max-md:hidden" />
@@ -36,10 +36,10 @@ export default function FAQ() {
             </a>
           </p>
         </div>
-        <ul className="mb-16 flex flex-wrap justify-center gap-x-4 gap-y-4 max-lg:mb-18 max-md:justify-start">
+        <ul className="mb-16 flex flex-wrap justify-center gap-x-3 gap-y-4 max-lg:mb-18 max-md:justify-start">
           {FAQs.map((obj) => (
             <button
-              className={`border-primary-50 text-primary-50 transition-properties cursor-pointer rounded-full border-2 px-8 py-4 text-lg/8 max-xl:px-6 max-xl:py-3 max-xl:text-base/loose ${
+              className={`border-primary-50 text-primary-50 transition-properties cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 max-xl:px-6 max-xl:text-base/loose max-sm:py-3 ${
                 obj.category === category &&
                 "bg-primary-500 text-primary-1300 border-primary-500 primary-glow"
               } ${obj.category !== category && "hover:bg-primary-50 hover:text-primary-1300"}`}

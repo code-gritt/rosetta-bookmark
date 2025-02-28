@@ -21,7 +21,7 @@ export default function Features() {
             />
           </figure>
           <div className="z-1 max-w-lg justify-self-end max-md:row-start-1 max-md:max-w-max">
-            <p className="mb-8 text-5xl font-semibold tracking-tighter max-xl:mb-6 max-xl:text-4xl/10 max-lg:mb-4 max-lg:text-3xl/12 max-lg:tracking-tighter max-sm:text-2xl/8 max-sm:tracking-tight">
+            <p className="mb-8 text-5xl/16 font-semibold tracking-tighter max-xl:mb-6 max-xl:text-4xl/10 max-lg:mb-4 max-lg:text-3xl/12 max-lg:tracking-tighter max-sm:text-2xl/8 max-sm:tracking-tight">
               Smart Organization
             </p>
             <p className="text-primary-100 z-1 text-xl/loose font-light max-xl:text-lg/8 max-lg:text-base/loose">
@@ -34,7 +34,7 @@ export default function Features() {
         </div>
         <div className="grid grid-cols-2 items-center gap-x-16 max-md:grid-cols-1 max-md:gap-y-10">
           <div className="max-w-lg justify-self-start max-md:max-w-max">
-            <p className="mb-8 text-5xl font-semibold tracking-tighter max-xl:mb-6 max-xl:text-4xl/10 max-lg:mb-4 max-lg:text-3xl/12 max-lg:tracking-tighter max-sm:text-2xl/8 max-sm:tracking-tight">
+            <p className="mb-8 text-5xl/16 font-semibold tracking-tighter max-xl:mb-6 max-xl:text-4xl/10 max-lg:mb-4 max-lg:text-3xl/12 max-lg:tracking-tighter max-sm:text-2xl/8 max-sm:tracking-tight">
               Contextual Reminders
             </p>
             <p className="text-primary-100 text-xl/loose font-light max-xl:text-lg/8 max-lg:text-base/loose">

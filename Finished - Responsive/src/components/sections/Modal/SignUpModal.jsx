@@ -1,12 +1,12 @@
 import Close from "../../icons/Close";
 import Checkmark from "../../icons/Checkmark";
 import { useState } from "react";
-import { UseModalContext } from "../../../contexts/ModalContext";
+import { useModalContext } from "../../../contexts/ModalContext";
 
 const initialState = { email: "", password: "" };
 
 export default function SignUpModal() {
-  const { setActiveModal } = UseModalContext();
+  const { setActiveModal } = useModalContext();
 
   const [checked, setChecked] = useState(false);
   const [inputs, setInputs] = useState(initialState);
@@ -28,8 +28,8 @@ export default function SignUpModal() {
   }
 
   return (
-    <section className="grid max-w-3xl grid-cols-2">
-      <div className="bg-primary-1300 flex flex-col justify-center gap-y-4 p-10 text-center max-md:px-6 max-md:py-8">
+    <section className="grid max-w-3xl grid-cols-2 max-sm:w-96 max-sm:grid-cols-1">
+      <div className="bg-primary-1300 flex flex-col justify-center gap-y-4 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10 text-center max-md:px-6 max-md:py-8 max-sm:hidden">
         <h4 className="text-primary-50 text-4xl/12 font-bold tracking-tight">
           Lets Get You Signed Up
         </h4>
@@ -37,7 +37,7 @@ export default function SignUpModal() {
           No charges, no fees. Get note taking in minutes!
         </p>
       </div>
-      <div className="bg-primary-1500 flex flex-col justify-between gap-y-24 p-10 max-md:px-6 max-md:py-8">
+      <div className="bg-primary-1400 flex flex-col justify-between gap-y-24 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10 max-md:px-6 max-md:py-8 max-sm:gap-y-16">
         <button
           className="border-primary-75 hover:bg-primary-75 group transition-properties ml-auto w-fit cursor-pointer rounded-2xl border-2 p-3"
           onClick={() => setActiveModal("")}
@@ -73,13 +73,13 @@ export default function SignUpModal() {
         </div>
         <div>
           <div
-            className="m-auto mb-4 w-fit cursor-pointer gap-x-2"
+            className="m-auto mb-4 w-fit cursor-pointer gap-x-2 max-sm:mb-3"
             onClick={() => setChecked((curr) => !curr)}
           >
             <button
               className={`border-primary-100 transition-properties mr-2 inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm border-2 ${checked && "bg-primary-100"}`}
             >
-              <Checkmark className="stroke-primary-1300" />
+              <Checkmark className="stroke-primary-1500" />
             </button>
             <p className="text-primary-100 inline cursor-pointer text-sm">
               I agree to all terms

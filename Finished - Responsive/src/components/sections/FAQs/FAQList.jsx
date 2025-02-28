@@ -48,7 +48,7 @@ export default function FAQQuestions({
             className="flex w-full cursor-pointer items-center"
             onClick={() => handleQuestionClick(question.id)}
           >
-            <div className="border-primary-50 mr-6 rounded-xl border-2 p-4 max-sm:mr-4 max-sm:p-3">
+            <div className="border-primary-50 mr-6 rounded-xl border-2 p-3.5 max-sm:mr-4 max-sm:p-3">
               <question.Icon
                 width={2}
                 className="stroke-primary-50"
@@ -81,7 +81,7 @@ export default function FAQQuestions({
                   }
                 : {}
             }
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.3, ease: "easeIn" }}
             layout
           >
             {question.answer}
