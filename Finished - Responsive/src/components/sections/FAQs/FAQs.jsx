@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { FAQs } from "../../../utils/content";
-import FAQQuestions from "./FAQList";
+import { frequentlyAskedQuestions } from "../../../utils/content";
+import FAQList from "./FAQList";
 
-export default function FAQ() {
+export default function FAQs() {
   const [category, setActiveCategory] = useState("General");
   const [activeQuestion, setActiveQuestion] = useState(null);
 
-  const categoryObj = FAQs.filter((obj) => obj.category === category).at(0);
+  const categoryObj = frequentlyAskedQuestions
+    .filter((obj) => obj.category === category)
+    .at(0);
   const questionsArr = categoryObj.questions;
 
   const handleQuestionClick = (id) =>
@@ -37,7 +39,7 @@ export default function FAQ() {
           </p>
         </div>
         <ul className="mb-16 flex flex-wrap justify-center gap-x-3 gap-y-4 max-lg:mb-18 max-md:justify-start">
-          {FAQs.map((obj) => (
+          {frequentlyAskedQuestions.map((obj) => (
             <li key={obj.id}>
               <button
                 className={`border-primary-50 text-primary-50 transition-properties cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 max-xl:px-6 max-xl:text-base/loose max-sm:py-3 ${
@@ -51,7 +53,7 @@ export default function FAQ() {
             </li>
           ))}
         </ul>
-        <FAQQuestions
+        <FAQList
           category={category}
           questions={questionsArr}
           activeQuestion={activeQuestion}

@@ -108,7 +108,7 @@ const logos = [
   },
 ];
 
-const FAQs = [
+const frequentlyAskedQuestions = [
   {
     category: "General",
     id: 1,
@@ -500,7 +500,7 @@ export {
   navigationLinks,
   reviews,
   logos,
-  FAQs,
+  frequentlyAskedQuestions,
   testimonials,
   footerCols,
   features,

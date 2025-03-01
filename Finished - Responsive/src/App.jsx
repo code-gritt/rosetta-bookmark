@@ -11,7 +11,7 @@ import Reviews from "./components/sections/Reviews";
 import Main from "./components/sections/Main";
 import Logos from "./components/sections/Logos";
 import Features from "./components/sections/Features";
-import FAQ from "./components/sections/FAQs/FAQs";
+import FAQs from "./components/sections/FAQs/FAQs";
 import Testimonials from "./components/sections/Tesimonials/Testimonials";
 
 // Footer
@@ -39,7 +39,7 @@ function App() {
           <Main>
             <Logos />
             <Features />
-            <FAQ />
+            <FAQs />
             <Testimonials />
           </Main>
           <Footer />

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { testimonials as test } from "../../../utils/content";
-import TestimonialColumn from "./TestimonialColumn";
 import CaretUp from "../../icons/CaretUp";
+import TestimonialList from "./TestimonialList";
 
 export default function Testimonials() {
   const [expanded, setExpanded] = useState(true);
@@ -23,11 +23,9 @@ export default function Testimonials() {
           </p>
         </div>
         <div className="mb-20 grid grid-cols-3 gap-x-6 max-xl:gap-x-4 max-lg:mb-18 max-lg:grid-cols-2 max-sm:grid-cols-1">
-          <TestimonialColumn testimonials={test.slice(0, expanded ? 5 : 2)} />
-          <TestimonialColumn testimonials={test.slice(5, expanded ? 10 : 7)} />
-          <TestimonialColumn
-            testimonials={test.slice(10, expanded ? 15 : 12)}
-          />
+          <TestimonialList testimonials={test.slice(0, expanded ? 5 : 2)} />
+          <TestimonialList testimonials={test.slice(5, expanded ? 10 : 7)} />
+          <TestimonialList testimonials={test.slice(10, expanded ? 15 : 12)} />
         </div>
         <button
           className="text-primary-50 border-primary-50 transition-properties hover:bg-primary-50 hover:text-primary-1300 group flex cursor-pointer items-center gap-x-3 rounded-full border-2 px-8 py-3.5 text-lg/8 max-xl:px-6 max-xl:py-3 max-xl:text-base/loose"
