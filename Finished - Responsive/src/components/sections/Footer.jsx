@@ -1,4 +1,4 @@
-import { footerCols } from "../../utils/constants";
+import { footerCols } from "../../utils/content";
 import Logo from "../icons/Logo";
 
 export default function Footer() {

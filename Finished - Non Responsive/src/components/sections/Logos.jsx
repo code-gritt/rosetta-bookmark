@@ -1,4 +1,4 @@
-import { logos } from "../../utils/constants";
+import { logos } from "../../utils/content";
 
 export default function Logos() {
   return (

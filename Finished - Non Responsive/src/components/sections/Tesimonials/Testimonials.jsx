@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { testimonials as test } from "../../../utils/constants";
+import { testimonials as test } from "../../../utils/content";
 import TestimonialColumn from "./TestimonialColumn";
 import CaretUp from "../../icons/CaretUp";
 

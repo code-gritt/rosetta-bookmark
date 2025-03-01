@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FAQs } from "../../../utils/constants";
+import { FAQs } from "../../../utils/content";
 import FAQQuestions from "./FAQList";
 
 export default function FAQ() {

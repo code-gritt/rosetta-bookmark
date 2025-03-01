@@ -1,4 +1,4 @@
-import { reviews } from "../../utils/constants";
+import { reviews } from "../../utils/content";
 
 export default function Reviews() {
   return (

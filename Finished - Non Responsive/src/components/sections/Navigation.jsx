@@ -1,6 +1,6 @@
 import Logo from "../icons/Logo";
 import MobileMenuIcon from "./MobileMenu/MobileMenuIcon";
-import { navigationLinks } from "../../utils/constants";
+import { navigationLinks } from "../../utils/content";
 import { useModalContext } from "../../contexts/ModalContext";
 
 export default function Navigation() {

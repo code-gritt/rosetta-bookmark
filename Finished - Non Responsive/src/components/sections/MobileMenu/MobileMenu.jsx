@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import Close from "../../icons/Close";
-import { navigationLinks } from "../../../utils/constants";
+import { navigationLinks } from "../../../utils/content";
 
 import { useModalContext } from "../../../contexts/ModalContext";
 import { useMobileMenuContext } from "../../../contexts/MobileMenuContext";
