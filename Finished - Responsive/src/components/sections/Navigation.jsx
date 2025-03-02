@@ -7,7 +7,7 @@ export default function Navigation() {
   const { setActiveModal } = useModalContext();
 
   return (
-    <nav className="text-primary-50 m-auto flex max-w-[90rem] justify-between px-24 text-lg/8 font-light transition-all duration-300 max-xl:px-16 max-xl:text-base/loose max-lg:px-8 max-md:px-6">
+    <nav className="text-primary-50 m-auto flex max-w-[90rem] justify-between px-24 text-lg/8 font-light max-xl:px-16 max-xl:text-base/loose max-lg:px-8 max-md:px-6">
       <a
         className="flex items-center gap-x-3 max-xl:gap-x-3 max-md:gap-x-2"
         href="#"

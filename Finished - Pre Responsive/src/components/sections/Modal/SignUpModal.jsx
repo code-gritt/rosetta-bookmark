@@ -30,32 +30,32 @@ export default function SignUpModal() {
   }
 
   return (
-    <section className="grid max-w-3xl grid-cols-2 max-sm:w-96 max-sm:grid-cols-1">
-      <div className="bg-primary-1300 flex flex-col justify-center gap-y-4 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10 text-center max-md:px-6 max-md:py-8 max-sm:hidden">
+    <section className="grid max-w-3xl grid-cols-2">
+      <div className="bg-primary-1300 flex flex-col justify-center gap-y-4 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10 text-center">
         <h4 className="text-primary-50 text-4xl/12 font-bold tracking-tight">
           Lets Get You Signed Up
         </h4>
-        <p className="text-primary-100 text-lg/8 max-md:text-base/loose">
+        <p className="text-primary-100 text-lg/8">
           No charges, no fees. Get note taking in minutes!
         </p>
       </div>
-      <div className="bg-primary-1400 flex flex-col justify-between gap-y-24 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10 max-md:px-6 max-md:py-8 max-sm:gap-y-16">
+      <div className="bg-primary-1400 flex flex-col justify-between gap-y-24 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10">
         <button
           className="border-primary-75 hover:bg-primary-75 group transition-properties ml-auto w-fit cursor-pointer rounded-2xl border-2 p-3"
           onClick={() => setActiveModal("")}
         >
           <Close
-            className="stroke-primary-75 group-hover:stroke-primary-1300 transition-properties max-md:h-4 max-md:w-4"
+            className="stroke-primary-75 group-hover:stroke-primary-1300 transition-properties"
             width={2}
           />
         </button>
-        <div className="text-primary-50 flex flex-col gap-y-6 text-lg/8 font-semibold tracking-tight max-md:font-normal">
+        <div className="text-primary-50 flex flex-col gap-y-6 text-lg/8 font-semibold tracking-tight">
           <label>
             Email
             <input
               name="email"
               type="email"
-              className="bg-primary-75 placeholder-primary-1500 text-primary-1300 mt-2 block w-full rounded-full px-8 py-4 font-normal placeholder:text-base placeholder:font-light placeholder:opacity-20 max-md:px-6 max-md:py-3"
+              className="bg-primary-75 placeholder-primary-1500 text-primary-1300 mt-2 block w-full rounded-full px-8 py-4 font-normal placeholder:text-base placeholder:font-light placeholder:opacity-20"
               placeholder="janedoe@gmail.com"
               onChange={handleInputs}
               value={inputs.email}
@@ -66,7 +66,7 @@ export default function SignUpModal() {
             <input
               name="password"
               type="password"
-              className="bg-primary-75 placeholder-primary-1500 text-primary-1300 mt-2 block w-full rounded-full px-8 py-4 font-normal placeholder:text-base placeholder:font-light placeholder:opacity-20 max-md:px-6 max-md:py-3"
+              className="bg-primary-75 placeholder-primary-1500 text-primary-1300 mt-2 block w-full rounded-full px-8 py-4 font-normal placeholder:text-base placeholder:font-light placeholder:opacity-20"
               placeholder="************"
               onChange={handleInputs}
               value={inputs.password}
@@ -75,7 +75,7 @@ export default function SignUpModal() {
         </div>
         <div>
           <div
-            className="m-auto mb-4 w-fit cursor-pointer gap-x-2 max-sm:mb-3"
+            className="m-auto mb-4 w-fit cursor-pointer gap-x-2"
             onClick={() => setChecked((curr) => !curr)}
           >
             <button
@@ -88,7 +88,7 @@ export default function SignUpModal() {
             </p>
           </div>
           <button
-            className="bg-primary-500 primary-glow-hover transition-properties w-full cursor-pointer rounded-full py-4 text-lg/8 max-md:px-6 max-md:py-3 max-md:text-base/loose"
+            className="bg-primary-500 primary-glow-hover transition-properties w-full cursor-pointer rounded-full py-4 text-lg/8"
             onClick={handleSubmit}
           >
             Get Started
