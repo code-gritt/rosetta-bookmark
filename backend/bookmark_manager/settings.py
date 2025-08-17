@@ -29,7 +29,7 @@ INSTALLED_APPS = [
 
     # Third-party apps
     "rest_framework",
-    "rest_framework.authtoken",  # 👈 enables token authentication
+    "rest_framework.authtoken",
     "corsheaders",
 
     # Local apps
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
 
 # --- Middleware ---
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # 👈 needs to be high up
+    "corsheaders.middleware.CorsMiddleware",  # Needs to be high up
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -108,7 +108,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",  # 👈 Token auth enabled
+        "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -117,7 +117,7 @@ REST_FRAMEWORK = {
 
 # --- CORS ---
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:5173",  # Corrected port for your React dev server
     "https://rosetta-bookmark.vercel.app",
 ]
 
