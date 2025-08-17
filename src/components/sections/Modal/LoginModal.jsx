@@ -54,7 +54,7 @@ function LoginModal({ onClose }) {
       {/* Left side (Decoration) */}
       <div className="bg-primary-1300 flex flex-col justify-center gap-y-4 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10 text-center max-md:px-6 max-md:py-8 max-sm:hidden">
         <h4 className="text-primary-50 text-4xl/12 font-bold tracking-tight">
-          Login
+          Rosetta Welcomes You
         </h4>
       </div>
 
