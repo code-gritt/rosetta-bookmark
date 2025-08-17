@@ -41,8 +41,8 @@ function App() {
               path="/"
               element={
                 <Page>
+                  <Navigation />
                   <Header>
-                    <Navigation />
                     <Hero />
                     <Reviews />
                   </Header>

@@ -2,69 +2,101 @@ import Logo from "../icons/Logo";
 import MobileMenuIcon from "./MobileMenu/MobileMenuIcon";
 import { useModalContext } from "../../contexts/ModalContext";
 import useAuthStore from "../../store/useAuthStore";
-import { Link } from "react-router-dom";
+import { Link, Link as RouterLink } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Button,
+  Typography,
+  Stack,
+  useMediaQuery,
+  IconButton,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 export default function Navigation() {
   const { setActiveModal } = useModalContext();
-  const { user, logout } = useAuthStore(); // assuming logout is defined in store
+  const { user, logout } = useAuthStore();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg")); // hides right side on smaller screens
 
   return (
-    <nav className="text-primary-50 m-auto flex max-w-[90rem] justify-between px-24 text-lg/8 font-light max-xl:px-16 max-xl:text-base/loose max-lg:px-8 max-md:px-6">
-      {/* Logo */}
-      <a
-        className="flex items-center gap-x-3 max-xl:gap-x-3 max-md:gap-x-2"
-        href="/"
-      >
-        <Logo
-          className="stroke-primary-500 h-6 max-md:h-5"
-          alt="NoteFlow Logo Icon"
-          width={5}
-        />
-        <p className="text-xl font-bold tracking-tight max-xl:text-xl max-md:text-lg/8 max-md:tracking-tighter">
-          Rosetta
-        </p>
-      </a>
+    <AppBar position="static" sx={{ bgcolor: "#0e2e2e" }}>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Link to="/">
+          <Typography variant="h6">Rosetta</Typography>
+        </Link>
 
-      {/* Right Side */}
-      <div className="flex items-center gap-x-3 max-lg:hidden">
-        {user ? (
-          <>
-            {/* Logged-in: show avatar/email + logout */}
-            <span className="text-sm font-medium">{user.email}</span>
-            <Link to="/dashboard">
-              <button className="bg-primary-500 hover:bg-primary-600 text-primary-1300 rounded-full px-4 py-2">
-                Dashboard
-              </button>
-            </Link>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          {/* Right Side */}
+          {!isMobile && (
+            <Stack direction="row" spacing={2} alignItems="center">
+              {user ? (
+                <>
+                  <Typography variant="body2">{user.email}</Typography>
+                  <Button
+                    component={RouterLink}
+                    to="/dashboard"
+                    variant="contained"
+                    sx={{
+                      bgcolor: "#44e5e7",
+                      color: "#061212",
+                      "&:hover": { bgcolor: "#36b7b9" },
+                      borderRadius: "9999px",
+                    }}
+                  >
+                    Dashboard
+                  </Button>
+                  <Button
+                    onClick={logout}
+                    variant="contained"
+                    sx={{
+                      bgcolor: "#44e5e7",
+                      color: "#061212",
+                      "&:hover": { bgcolor: "#36b7b9" },
+                      borderRadius: "9999px",
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      borderColor: "#ecfcfd",
+                      color: "#ecfcfd",
+                      "&:hover": { bgcolor: "#ecfcfd", color: "#061212" },
+                      borderRadius: "9999px",
+                    }}
+                    onClick={() => setActiveModal("login")}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      bgcolor: "#44e5e7",
+                      color: "#061212",
+                      "&:hover": { bgcolor: "#ecfcfd", color: "#061212" },
+                      borderRadius: "9999px",
+                      boxShadow: "0 0 25px rgba(68, 229, 231, 0.2)",
+                    }}
+                    onClick={() => setActiveModal("sign-up")}
+                  >
+                    Get Started
+                  </Button>
+                </>
+              )}
+            </Stack>
+          )}
 
-            <button
-              onClick={logout}
-              className="bg-primary-500 hover:bg-primary-600 text-primary-1300 rounded-full px-4 py-2"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            {/* Not logged-in: show buttons */}
-            <button
-              className="border-primary-50 transition-properties hover:bg-primary-50 hover:text-primary-1300 box-border cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 font-normal max-xl:px-6 max-xl:py-3 max-xl:text-base/loose"
-              onClick={() => setActiveModal("login")}
-            >
-              Login
-            </button>
-            <button
-              className="bg-primary-500 border-primary-500 text-primary-1300 primary-glow hover:border-primary-50 hover:bg-primary-50 primary-glow-hover transition-properties cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 font-normal max-xl:px-6 max-xl:py-3 max-xl:text-base/loose"
-              onClick={() => setActiveModal("sign-up")}
-            >
-              Get Started
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* Mobile Menu Icon */}
-      <MobileMenuIcon />
-    </nav>
+          {/* Mobile Menu Icon */}
+          {isMobile && <MobileMenuIcon />}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }

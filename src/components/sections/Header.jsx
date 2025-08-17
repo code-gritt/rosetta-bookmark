@@ -1,7 +1,25 @@
+import { AppBar, Toolbar, Box } from "@mui/material";
+
 export default function Header({ children }) {
   return (
-    <header className="bg-gradient-to-bottom py-4 max-xl:py-3 max-lg:pb-6 max-md:pt-2 max-md:pb-6">
-      {children}
-    </header>
+    <AppBar
+      position="static"
+      sx={{
+        background: "linear-gradient(to bottom, #061212, #0e2e2e)",
+        py: { xs: 1, sm: 2 },
+      }}
+      elevation={0}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          gap: 2,
+        }}
+      >
+        <Box width="100%">{children}</Box>
+      </Toolbar>
+    </AppBar>
   );
 }

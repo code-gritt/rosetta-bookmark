@@ -1,11 +1,20 @@
-import { motion } from "motion/react";
-import Close from "../../icons/Close";
+import { useState } from "react";
+import {
+  Drawer,
+  Box,
+  Button,
+  Typography,
+  IconButton,
+  Stack,
+  Fade,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useModalContext } from "../../../contexts/ModalContext";
 import { useMobileMenuContext } from "../../../contexts/MobileMenuContext";
 import useAuthStore from "../../../store/useAuthStore";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
-function MobileMenu() {
+export default function MobileMenu() {
   const { setActiveModal } = useModalContext();
   const { mobileMenuOpened, setMobileMenuOpened } = useMobileMenuContext();
   const { user, logout } = useAuthStore();
@@ -21,74 +30,108 @@ function MobileMenu() {
   };
 
   return (
-    <motion.div
-      animate={mobileMenuOpened ? "visible" : "hidden"}
-      variants={{
-        hidden: { opacity: 0, visibility: "hidden" },
-        visible: { opacity: 1, visibility: "visible" },
+    <Drawer
+      anchor="right"
+      open={mobileMenuOpened}
+      onClose={() => setMobileMenuOpened(false)}
+      PaperProps={{
+        sx: {
+          width: 280,
+          bgcolor: "#061212", // primary-1400
+          backgroundImage: "url('/src/assets/Noise.webp')",
+          backgroundRepeat: "repeat",
+          borderRadius: 3,
+          p: 3,
+        },
       }}
-      transition={{ duration: 0.25 }}
-      className="bg-primary-1300/50 fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-end px-6 py-6 pl-28 backdrop-blur-sm"
+      BackdropProps={{
+        sx: {
+          bgcolor: "rgba(6, 18, 18, 0.5)", // primary-1300/50
+          backdropFilter: "blur(5px)",
+        },
+      }}
     >
-      <motion.div
-        animate={mobileMenuOpened ? "visible" : "hidden"}
-        variants={{
-          hidden: { x: "100%", opacity: 0, visibility: "hidden" },
-          visible: { x: "0%", opacity: 1, visibility: "visible" },
-        }}
-        transition={{ duration: 0.25, ease: "easeInOut" }}
-        className="bg-primary-1400 flex basis-80 flex-col justify-between rounded-2xl bg-[url('../src/assets/Noise.webp')] bg-repeat px-6 py-8"
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        height="100%"
       >
-        <div>
-          {/* Close Button */}
-          <button
-            className="border-primary-75 hover:bg-primary-75 group transition-properties mr-auto w-fit cursor-pointer rounded-2xl border-2 p-3"
+        {/* Close Button */}
+        <Box mb={2}>
+          <IconButton
             onClick={() => setMobileMenuOpened(false)}
+            sx={{
+              border: "2px solid #bfc5c9", // primary-75
+              "&:hover": { bgcolor: "#bfc5c9" },
+            }}
           >
-            <Close
-              className="stroke-primary-75 group-hover:stroke-primary-1300 transition-properties h-4 w-4"
-              width={2}
-            />
-          </button>
-        </div>
+            <CloseIcon sx={{ color: "#bfc5c9" }} />
+          </IconButton>
+        </Box>
 
-        <div className="flex flex-col gap-y-3">
+        {/* Menu Items */}
+        <Stack spacing={2}>
           {user ? (
             <>
-              <span className="text-white">{user.email}</span>
-              <Link to="/dashboard">
-                <button className="bg-primary-500 hover:bg-primary-600 text-primary-1300 rounded-full px-4 py-2">
-                  Dashboard
-                </button>
-              </Link>
-
-              <button
-                onClick={() => logout()}
-                className="bg-primary-500 border-primary-500 text-primary-1300 rounded-full px-6 py-3 text-base font-normal"
+              <Typography color="white">{user.email}</Typography>
+              <Button
+                component={RouterLink}
+                to="/dashboard"
+                variant="contained"
+                sx={{
+                  bgcolor: "#44e5e7",
+                  color: "#061212",
+                  borderRadius: "9999px",
+                  "&:hover": { bgcolor: "#36b7b9" },
+                }}
+              >
+                Dashboard
+              </Button>
+              <Button
+                onClick={logout}
+                variant="contained"
+                sx={{
+                  bgcolor: "#44e5e7",
+                  color: "#061212",
+                  borderRadius: "9999px",
+                  "&:hover": { bgcolor: "#36b7b9" },
+                }}
               >
                 Logout
-              </button>
+              </Button>
             </>
           ) : (
             <>
-              <button
+              <Button
                 onClick={handleLogin}
-                className="border-primary-50 transition-properties text-primary-50 hover:bg-primary-50 hover:text-primary-1300 box-border cursor-pointer rounded-full border-2 px-6 py-3 text-base font-normal"
+                variant="outlined"
+                sx={{
+                  borderColor: "#ecfcfd",
+                  color: "#ecfcfd",
+                  borderRadius: "9999px",
+                  "&:hover": { bgcolor: "#ecfcfd", color: "#061212" },
+                }}
               >
                 Login
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleGetStarted}
-                className="bg-primary-500 border-primary-500 text-primary-1300 primary-glow hover:border-primary-50 hover:bg-primary-50 primary-glow-hover transition-properties cursor-pointer rounded-full border-2 px-6 py-3 text-base font-normal"
+                variant="contained"
+                sx={{
+                  bgcolor: "#44e5e7",
+                  color: "#061212",
+                  borderRadius: "9999px",
+                  boxShadow: "0 0 25px rgba(68, 229, 231, 0.2)",
+                  "&:hover": { bgcolor: "#ecfcfd", color: "#061212" },
+                }}
               >
                 Get Started
-              </button>
+              </Button>
             </>
           )}
-        </div>
-      </motion.div>
-    </motion.div>
+        </Stack>
+      </Box>
+    </Drawer>
   );
 }
-
-export default MobileMenu;

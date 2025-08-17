@@ -1,49 +1,109 @@
 import HeroGraphic from "../../assets/graphics/HeroGraphic.webp";
 import { useModalContext } from "../../contexts/ModalContext";
-import ArrowRight from "../icons/ArrowRight";
-import ArrowRightLine from "../icons/ArrowRightLine";
+import { Box, Typography, Button, Stack } from "@mui/material";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
 export default function Hero() {
   const { setActiveModal } = useModalContext();
 
   return (
-    <div className="m-auto grid max-w-[90rem] grid-cols-[5fr_4fr] items-center gap-x-18 px-24 py-42 max-xl:grid-cols-2 max-xl:gap-x-12 max-xl:px-16 max-xl:py-38 max-lg:px-8 max-lg:py-32 max-md:grid-cols-1 max-md:grid-rows-[repeat(2,auto)] max-md:gap-y-12 max-md:px-6 max-md:py-24">
-      <div>
-        <h1 className="text-primary-50 mb-6 text-6xl/18 font-semibold tracking-tighter max-xl:mb-4 max-xl:text-5xl/16 max-lg:text-4xl/10 max-lg:tracking-tight max-sm:text-3xl/9 max-sm:tracking-tighter">
+    <Box
+      sx={{
+        maxWidth: "90rem",
+        mx: "auto",
+        px: { xs: 2, sm: 3, md: 4, lg: 6 },
+        py: { xs: 6, sm: 8, md: 12 },
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", md: "5fr 4fr" },
+        gap: { xs: 6, md: 12, lg: 18 },
+        alignItems: "center",
+      }}
+    >
+      {/* Text Section */}
+      <Box>
+        <Typography
+          variant="h2"
+          component="h1"
+          sx={{
+            color: "primary.contrastText",
+            mb: { xs: 4, md: 6 },
+            fontWeight: 600,
+            lineHeight: 1.2,
+            fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem", lg: "3.75rem" },
+            letterSpacing: "-1px",
+          }}
+        >
           Save, Organize & Find Anything Instantly with Rosetta
-        </h1>
-        <p className="text-primary-100 mb-10 text-xl/loose font-light max-xl:mb-8 max-xl:text-lg/8 max-lg:text-base/loose">
-          A smarter way to manage bookmarks, code snippets, and notes. <br />
+        </Typography>
+
+        <Typography
+          variant="body1"
+          sx={{
+            color: "#ffffff",
+            mb: { xs: 4, md: 10 },
+            fontWeight: 300,
+            fontSize: { xs: "1rem", sm: "1.125rem", md: "1.25rem" },
+            lineHeight: 1.6,
+          }}
+        >
+          A smarter way to manage bookmarks, code snippets, and notes.
+          <br />
           Auto-tagging, cross-device sync, and lightning-fast search—all in one
           private hub.
-        </p>
-        <button
-          className="text-primary-1300 bg-primary-500 border-primary-500 hover:border-primary-50 hover:bg-primary-50 transition-properties primary-glow-hover primary-glow group flex cursor-pointer items-center gap-x-3 rounded-full border-2 px-8 py-3.5 max-xl:gap-x-2 max-xl:px-6 max-xl:py-3"
+        </Typography>
+        <Button
+          variant="contained"
           onClick={() => setActiveModal("sign-up")}
+          endIcon={<ArrowRightIcon />}
+          sx={{
+            bgcolor: "#36B7B9", // fixed button color
+            color: "primary.contrastText",
+            borderRadius: "9999px",
+            px: { xs: 3, md: 5 }, // compact horizontal padding
+            py: { xs: 1, md: 2 }, // compact vertical padding
+            fontSize: { xs: "0.75rem", md: "1rem" },
+            textTransform: "none",
+            "&:hover": {
+              bgcolor: "#36B7B9", // hover keeps the same color
+              opacity: 0.9, // subtle hover effect
+            },
+          }}
         >
-          <p className="text-lg/8 max-xl:text-base/loose">Start Free</p>
-          <div className="w-5 max-xl:w-4 max-sm:hidden">
-            <ArrowRightLine
-              alt="Arrow right line"
-              className="stroke-primary-1300 transition-properties -mr-3 inline w-0 opacity-0 ease-in-out group-hover:w-3 group-hover:opacity-100"
-              width={2.5}
-            />
-            <ArrowRight
-              alt="Arrow right icon"
-              className="stroke-primary-1300 inline w-5 max-xl:w-4"
-              width={2}
-            />
-          </div>
-        </button>
-      </div>
-      <div className="relative">
-        <div className="bg-primary-1300 absolute top-0 right-0 bottom-0 left-0 rounded-full blur-3xl" />
-        <img
+          Start Free
+        </Button>
+      </Box>
+
+      {/* Graphic Section */}
+      <Box
+        sx={{
+          position: "relative",
+          display: "flex",
+          justifyContent: { xs: "center", md: "flex-end" },
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+
+            borderRadius: "50%",
+            filter: "blur(3rem)",
+          }}
+        />
+        <Box
+          component="img"
           src={HeroGraphic}
           alt="Hero graphic of Rosetta showing bookmarks, snippets, and notes organized"
-          className="relative max-h-[30rem] justify-self-end max-md:max-h-auto max-md:max-w-[90%] max-md:justify-self-center max-sm:max-w-full"
+          sx={{
+            position: "relative",
+            maxHeight: { xs: "auto", md: "30rem" },
+            maxWidth: { xs: "90%", md: "100%" },
+          }}
         />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
