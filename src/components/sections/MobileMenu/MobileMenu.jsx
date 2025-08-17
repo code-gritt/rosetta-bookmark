@@ -57,7 +57,7 @@ function MobileMenu() {
               width={2}
             />
           </button>
-          <ul className="mt-16 flex flex-col gap-y-6">
+          {/* <ul className="mt-16 flex flex-col gap-y-6">
             {navigationLinks.map((link) => {
               return (
                 <li key={link.id}>
@@ -70,7 +70,7 @@ function MobileMenu() {
                 </li>
               );
             })}
-          </ul>
+          </ul> */}
         </div>
         <div className="flex flex-col gap-y-3">
           <button className="border-primary-50 transition-properties text-primary-50 hover:bg-primary-50 hover:text-primary-1300 box-border cursor-pointer rounded-full border-2 px-6 py-3 text-base/loose font-normal">

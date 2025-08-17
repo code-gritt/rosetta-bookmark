@@ -25,33 +25,36 @@ import { ModalContextProvider } from "./contexts/ModalContext";
 // Mobile Menu
 import MobileMenu from "./components/sections/MobileMenu/MobileMenu";
 import { MobileMenuContextProvider } from "./contexts/MobileMenuContext";
+import ClientWrapper from "./components/client-wrapper";
 
 function App() {
   return (
-    <ModalContextProvider>
-      <MobileMenuContextProvider>
-        <Page>
-          <Header>
-            <Navigation />
-            <Hero />
-            <Reviews />
-          </Header>
-          <Main>
-            <Logos />
-            <Features />
-            <FAQs />
-            <Testimonials />
-          </Main>
-          <Footer />
+    <ClientWrapper>
+      <ModalContextProvider>
+        <MobileMenuContextProvider>
+          <Page>
+            <Header>
+              <Navigation />
+              <Hero />
+              <Reviews />
+            </Header>
+            <Main>
+              <Logos />
+              <Features />
+              <FAQs />
+              <Testimonials />
+            </Main>
+            <Footer />
 
-          <Modal modal="sign-up">
-            <SignUpModal />
-          </Modal>
+            <Modal modal="sign-up">
+              <SignUpModal />
+            </Modal>
 
-          <MobileMenu />
-        </Page>
-      </MobileMenuContextProvider>
-    </ModalContextProvider>
+            <MobileMenu />
+          </Page>
+        </MobileMenuContextProvider>
+      </ModalContextProvider>
+    </ClientWrapper>
   );
 }
 
