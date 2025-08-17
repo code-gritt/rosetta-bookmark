@@ -17,6 +17,12 @@ import {
   Menu,
   MenuItem,
   Divider,
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
@@ -27,6 +33,12 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Bookmark creation state
+  const [showForm, setShowForm] = useState(false);
+  const [newBookmark, setNewBookmark] = useState({ url: "", title: "" });
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState(null);
 
   // Avatar menu state
   const [anchorEl, setAnchorEl] = useState(null);
@@ -69,6 +81,31 @@ export default function Dashboard() {
       fetchBookmarks();
     }
   }, [authLoaded, user, token]);
+
+  // Handle bookmark creation
+  const handleAddBookmark = async () => {
+    if (!newBookmark.url) {
+      setFormError("URL is required.");
+      return;
+    }
+    setFormLoading(true);
+    setFormError(null);
+    try {
+      const res = await API.post("/bookmarks/create/", newBookmark, {
+        headers: { Authorization: `Token ${token}` },
+      });
+      setBookmarks([...bookmarks, res.data]);
+      setShowForm(false);
+      setNewBookmark({ url: "", title: "" });
+    } catch (err) {
+      setFormError(
+        err.response?.data?.error || "Failed to add bookmark. Try again.",
+      );
+      console.error("Error adding bookmark:", err);
+    } finally {
+      setFormLoading(false);
+    }
+  };
 
   // Wait until auth is initialized
   if (!authLoaded) {
@@ -126,9 +163,62 @@ export default function Dashboard() {
       </AppBar>
 
       <Container sx={{ mt: 5 }}>
-        <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
-          Your Bookmarks
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
+          <Typography variant="h6">Your Bookmarks</Typography>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setShowForm(true)}
+          >
+            Add Bookmark
+          </Button>
+        </Box>
+
+        <Dialog open={showForm} onClose={() => setShowForm(false)}>
+          <DialogTitle>Add New Bookmark</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="URL"
+              type="url"
+              fullWidth
+              value={newBookmark.url}
+              onChange={(e) =>
+                setNewBookmark({ ...newBookmark, url: e.target.value })
+              }
+              error={!!formError}
+              helperText={formError}
+            />
+            <TextField
+              margin="dense"
+              label="Title (Optional)"
+              type="text"
+              fullWidth
+              value={newBookmark.title}
+              onChange={(e) =>
+                setNewBookmark({ ...newBookmark, title: e.target.value })
+              }
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowForm(false)}>Cancel</Button>
+            <Button
+              onClick={handleAddBookmark}
+              disabled={formLoading}
+              color="primary"
+            >
+              {formLoading ? <CircularProgress size={24} /> : "Add"}
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {loading ? (
           <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
@@ -139,13 +229,51 @@ export default function Dashboard() {
         ) : bookmarks.length === 0 ? (
           <Typography>No bookmarks yet.</Typography>
         ) : (
-          <List>
+          <List
+            sx={{
+              display: "grid",
+              gap: 2,
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            }}
+          >
             {bookmarks.map((bookmark) => (
-              <Paper key={bookmark.id} sx={{ mb: 2, p: 2, bgcolor: "#144545" }}>
-                <ListItem>
+              <Paper
+                key={bookmark.id}
+                sx={{
+                  p: 2,
+                  bgcolor: "#144545",
+                  borderRadius: 3,
+                  boxShadow: 3,
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: 6,
+                  },
+                }}
+              >
+                <ListItem sx={{ px: 0 }}>
                   <ListItemText
-                    primary={bookmark.title || bookmark.url}
-                    secondary={bookmark.url}
+                    primary={
+                      <Typography
+                        variant="h6"
+                        component="a"
+                        href={bookmark.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          color: "#fff",
+                          textDecoration: "none",
+                          "&:hover": { textDecoration: "underline" },
+                        }}
+                      >
+                        {bookmark.title || bookmark.url}
+                      </Typography>
+                    }
+                    secondary={
+                      <Typography variant="body2" sx={{ color: "#a0e0e0" }}>
+                        {bookmark.url}
+                      </Typography>
+                    }
                   />
                 </ListItem>
               </Paper>
