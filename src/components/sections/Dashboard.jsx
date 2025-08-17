@@ -1,4 +1,3 @@
-// Dashboard.jsx
 import { useEffect, useState } from "react";
 import API from "../../utils/api";
 import useAuthStore from "../../store/useAuthStore";
@@ -18,15 +17,30 @@ import {
   Paper,
   CircularProgress,
   Box,
+  Menu,
+  MenuItem,
+  Divider,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
 export default function Dashboard() {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const [bookmarks, setBookmarks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Avatar menu state
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleAvatarClick = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
+
+  const handleLogout = () => {
+    handleMenuClose();
+    logout();
+    navigate("/");
+  };
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -61,25 +75,34 @@ export default function Dashboard() {
       {/* Header / Navigation */}
       <AppBar position="static" sx={{ bgcolor: "#0e2e2e" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Link to="/">
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
             <Typography variant="h6">Rosetta</Typography>
           </Link>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Avatar sx={{ bgcolor: deepPurple[500] }}>
+            <Avatar
+              sx={{ bgcolor: deepPurple[500], cursor: "pointer" }}
+              onClick={handleAvatarClick}
+            >
               {user.email[0].toUpperCase()}
             </Avatar>
-            <Typography>{user.email}</Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                localStorage.removeItem("token");
-                navigate("/");
-              }}
+
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleMenuClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
             >
-              Logout
-            </Button>
+              <Box sx={{ px: 2, py: 1 }}>
+                <Typography variant="subtitle1">{user.email}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  User ID: {user.userId}
+                </Typography>
+              </Box>
+              <Divider />
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </Box>
         </Toolbar>
       </AppBar>

@@ -2,7 +2,7 @@ import Logo from "../icons/Logo";
 import MobileMenuIcon from "./MobileMenu/MobileMenuIcon";
 import { useModalContext } from "../../contexts/ModalContext";
 import useAuthStore from "../../store/useAuthStore";
-import { Link, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -10,23 +10,41 @@ import {
   Button,
   Typography,
   Stack,
+  Avatar,
+  Menu,
+  MenuItem,
+  Divider,
   useMediaQuery,
-  IconButton,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { deepPurple } from "@mui/material/colors";
+import { useState } from "react";
 
 export default function Navigation() {
   const { setActiveModal } = useModalContext();
   const { user, logout } = useAuthStore();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("lg")); // hides right side on smaller screens
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+
+  // Avatar menu state
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleAvatarClick = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
+
+  const handleLogout = () => {
+    handleMenuClose();
+    logout();
+  };
 
   return (
     <AppBar position="static" sx={{ bgcolor: "#0e2e2e" }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Link to="/">
-          <Typography variant="h6">Rosetta</Typography>
-        </Link>
+        <RouterLink to="/" style={{ textDecoration: "none" }}>
+          <Typography variant="h6" color="inherit">
+            Rosetta
+          </Typography>
+        </RouterLink>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {/* Right Side */}
@@ -34,7 +52,6 @@ export default function Navigation() {
             <Stack direction="row" spacing={2} alignItems="center">
               {user ? (
                 <>
-                  <Typography variant="body2">{user.email}</Typography>
                   <Button
                     component={RouterLink}
                     to="/dashboard"
@@ -48,18 +65,36 @@ export default function Navigation() {
                   >
                     Dashboard
                   </Button>
-                  <Button
-                    onClick={logout}
-                    variant="contained"
-                    sx={{
-                      bgcolor: "#44e5e7",
-                      color: "#061212",
-                      "&:hover": { bgcolor: "#36b7b9" },
-                      borderRadius: "9999px",
-                    }}
+                  {/* Avatar with dropdown */}
+                  <Avatar
+                    sx={{ bgcolor: deepPurple[500], cursor: "pointer" }}
+                    onClick={handleAvatarClick}
                   >
-                    Logout
-                  </Button>
+                    {user.email[0].toUpperCase()}
+                  </Avatar>
+
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleMenuClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  >
+                    <Box sx={{ px: 2, py: 1 }}>
+                      <Typography variant="subtitle1">{user.email}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        User ID: {user.userId}
+                      </Typography>
+                    </Box>
+                    <Divider />
+                    <MenuItem
+                      onClick={() => {
+                        handleLogout();
+                      }}
+                    >
+                      Logout
+                    </MenuItem>
+                  </Menu>
                 </>
               ) : (
                 <>
