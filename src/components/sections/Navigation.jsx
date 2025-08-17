@@ -22,7 +22,6 @@ export default function Navigation() {
         </p>
       </a>
 
-      {/* Navigation links */}
       <ul className="flex items-center gap-x-8 max-xl:gap-x-6 max-lg:hidden">
         {navigationLinks.map((link) => (
           <li key={link.id}>
@@ -37,14 +36,12 @@ export default function Navigation() {
       </ul>
 
       <div className="flex items-center gap-x-3 max-lg:hidden">
-        {/* Login Button */}
         <button
           className="border-primary-50 transition-properties hover:bg-primary-50 hover:text-primary-1300 box-border cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 font-normal max-xl:px-6 max-xl:py-3 max-xl:text-base/loose"
-          onClick={() => setActiveModal("login")}
+          onClick={() => setActiveModal("login")} // Ensure this matches the Modal modal prop
         >
           Login
         </button>
-        {/* Get Started Button */}
         <button
           className="bg-primary-500 border-primary-500 text-primary-1300 primary-glow hover:border-primary-50 hover:bg-primary-50 primary-glow-hover transition-properties cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 font-normal max-xl:px-6 max-xl:py-3 max-xl:text-base/loose"
           onClick={() => setActiveModal("sign-up")}

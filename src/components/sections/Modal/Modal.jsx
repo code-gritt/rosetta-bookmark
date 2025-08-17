@@ -1,5 +1,5 @@
 import { useModalContext } from "../../../contexts/ModalContext";
-import { motion } from "motion/react";
+import { motion } from "motion/react"; // Note: Should likely be "framer-motion" instead of "motion/react"
 
 export default function Modal({ children, modal }) {
   const { activeModal, setActiveModal } = useModalContext();
@@ -14,7 +14,7 @@ export default function Modal({ children, modal }) {
           visibility: "hidden",
         },
         visible: {
-          opactiy: 100,
+          opacity: 1, // Corrected from 'opactiy' to 'opacity'
           visibility: "visible",
         },
       }}
@@ -25,18 +25,10 @@ export default function Modal({ children, modal }) {
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={
-          activelyDisplayedModal
-            ? {
-                opacity: 100,
-                y: 0,
-              }
-            : {
-                opacity: 0,
-                y: 30,
-              }
+          activelyDisplayedModal ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
         }
         transition={{ duration: 0.25, ease: "easeInOut" }}
-        className="flex overflow-hidden rounded-2xl opacity-0 shadow-[0px_0px_20px_rgb(6,18,18,.10)]"
+        className="flex overflow-hidden rounded-2xl shadow-[0px_0px_20px_rgb(6,18,18,.10)]"
       >
         {children}
       </motion.div>

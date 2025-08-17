@@ -20,6 +20,7 @@ import Footer from "./components/sections/Footer";
 // Modal
 import Modal from "./components/sections/Modal/Modal";
 import SignUpModal from "./components/sections/Modal/SignUpModal";
+import LoginModal from "./components/sections/Modal/LoginModal"; // Import LoginModal
 import { ModalContextProvider } from "./contexts/ModalContext";
 
 // Mobile Menu
@@ -46,8 +47,14 @@ function App() {
             </Main>
             <Footer />
 
+            {/* Modal for Sign-up */}
             <Modal modal="sign-up">
               <SignUpModal />
+            </Modal>
+
+            {/* Modal for Login */}
+            <Modal modal="login">
+              <LoginModal />
             </Modal>
 
             <MobileMenu />
