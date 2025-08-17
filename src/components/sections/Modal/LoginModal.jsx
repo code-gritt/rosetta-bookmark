@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CloseIcon from "../../icons/Close"; // Assuming this is the correct path
+import CloseIcon from "../../icons/Close";
 import { useModalContext } from "../../../contexts/ModalContext";
 import useAuthStore from "../../../store/useAuthStore";
 import API from "../../../utils/api";
@@ -29,15 +29,16 @@ function LoginModal({ onClose }) {
       const data = res.data;
       setUser({
         token: data.token,
-        userId: data.user_id,
         email: data.email,
+        userId: data.user_id,
       });
-      localStorage.setItem("token", data.token);
+      // Store additional data in localStorage for initialization
+      localStorage.setItem("email", data.email);
+      localStorage.setItem("userId", data.user_id);
       setSuccess(true);
-      setTimeout(() => {
-        setActiveModal("");
-        window.location.href = "/dashboard";
-      }, 1500);
+      // Immediate redirect without delay
+      setActiveModal("");
+      window.location.href = "/dashboard";
     } catch (err) {
       setError(
         err.response?.data?.error ||
@@ -54,14 +55,16 @@ function LoginModal({ onClose }) {
       {/* Left side (Decoration) */}
       <div className="bg-primary-1300 flex flex-col justify-center gap-y-4 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10 text-center max-md:px-6 max-md:py-8 max-sm:hidden">
         <h4 className="text-primary-50 text-4xl/12 font-bold tracking-tight">
-          Rosetta Welcomes You
+          Rosetta
         </h4>
+        <p className="text-primary-100 text-lg/8 max-md:text-base/loose">
+          Welcomes You!
+        </p>
       </div>
 
       {/* Right side (Form) */}
       <div className="bg-primary-1400 flex flex-col justify-between gap-y-24 bg-[url('../src/assets/Noise.webp')] bg-repeat p-10 max-md:px-6 max-md:py-8 max-sm:gap-y-16">
         {/* Close button */}
-
         <button
           onClick={() => setActiveModal("")}
           className="border-primary-75 hover:bg-primary-75 group transition-properties ml-auto w-fit cursor-pointer rounded-2xl border-2 p-3"
