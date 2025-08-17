@@ -9,6 +9,11 @@ function MobileMenu() {
   const { setActiveModal } = useModalContext();
   const { mobileMenuOpened, setMobileMenuOpened } = useMobileMenuContext();
 
+  function handleLogin() {
+    setActiveModal("login");
+    setMobileMenuOpened(false);
+  }
+
   function handleGetStarted() {
     setActiveModal("sign-up");
     setMobileMenuOpened(false);
@@ -23,7 +28,7 @@ function MobileMenu() {
           visibility: "hidden",
         },
         visible: {
-          opactiy: 100,
+          opacity: 1,
           visibility: "visible",
         },
       }}
@@ -40,7 +45,7 @@ function MobileMenu() {
           },
           visible: {
             x: "0%",
-            opactiy: 100,
+            opacity: 1,
             visibility: "visible",
           },
         }}
@@ -48,6 +53,7 @@ function MobileMenu() {
         className="bg-primary-1400 flex basis-80 flex-col justify-between rounded-2xl bg-[url('../src/assets/Noise.webp')] bg-repeat px-6 py-8"
       >
         <div>
+          {/* Close Button */}
           <button
             className="border-primary-75 hover:bg-primary-75 group transition-properties mr-auto w-fit cursor-pointer rounded-2xl border-2 p-3"
             onClick={() => setMobileMenuOpened(false)}
@@ -57,28 +63,19 @@ function MobileMenu() {
               width={2}
             />
           </button>
-          {/* <ul className="mt-16 flex flex-col gap-y-6">
-            {navigationLinks.map((link) => {
-              return (
-                <li key={link.id}>
-                  <a
-                    href={link.href}
-                    className="text-primary-50 hover:text-primary-500 transition-properties text-lg/8"
-                  >
-                    {link.link}
-                  </a>
-                </li>
-              );
-            })}
-          </ul> */}
         </div>
+
+        {/* Action Buttons */}
         <div className="flex flex-col gap-y-3">
-          <button className="border-primary-50 transition-properties text-primary-50 hover:bg-primary-50 hover:text-primary-1300 box-border cursor-pointer rounded-full border-2 px-6 py-3 text-base/loose font-normal">
+          <button
+            onClick={handleLogin}
+            className="border-primary-50 transition-properties text-primary-50 hover:bg-primary-50 hover:text-primary-1300 box-border cursor-pointer rounded-full border-2 px-6 py-3 text-base font-normal"
+          >
             Login
           </button>
           <button
             onClick={handleGetStarted}
-            className="bg-primary-500 border-primary-500 text-primary-1300 primary-glow hover:border-primary-50 hover:bg-primary-50 primary-glow-hover transition-properties cursor-pointer rounded-full border-2 px-6 py-3 text-base/loose font-normal"
+            className="bg-primary-500 border-primary-500 text-primary-1300 primary-glow hover:border-primary-50 hover:bg-primary-50 primary-glow-hover transition-properties cursor-pointer rounded-full border-2 px-6 py-3 text-base font-normal"
           >
             Get Started
           </button>
