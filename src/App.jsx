@@ -20,45 +20,53 @@ import Footer from "./components/sections/Footer";
 // Modal
 import Modal from "./components/sections/Modal/Modal";
 import SignUpModal from "./components/sections/Modal/SignUpModal";
-import LoginModal from "./components/sections/Modal/LoginModal"; // Import LoginModal
+import LoginModal from "./components/sections/Modal/LoginModal";
 import { ModalContextProvider } from "./contexts/ModalContext";
 
 // Mobile Menu
 import MobileMenu from "./components/sections/MobileMenu/MobileMenu";
 import { MobileMenuContextProvider } from "./contexts/MobileMenuContext";
 import ClientWrapper from "./components/client-wrapper";
+import { Routes, Route } from "react-router-dom"; // Import routing components
+import Dashboard from "./components/sections/Dashboard";
 
 function App() {
   return (
     <ClientWrapper>
       <ModalContextProvider>
         <MobileMenuContextProvider>
-          <Page>
-            <Header>
-              <Navigation />
-              <Hero />
-              <Reviews />
-            </Header>
-            <Main>
-              <Logos />
-              <Features />
-              <FAQs />
-              <Testimonials />
-            </Main>
-            <Footer />
+          <Routes>
+            {/* Landing page */}
+            <Route
+              path="/"
+              element={
+                <Page>
+                  <Header>
+                    <Navigation />
+                    <Hero />
+                    <Reviews />
+                  </Header>
+                  <Main>
+                    <Logos />
+                    <Features />
+                    <FAQs />
+                    <Testimonials />
+                  </Main>
+                  <Footer />
+                  <Modal modal="sign-up">
+                    <SignUpModal />
+                  </Modal>
+                  <Modal modal="login">
+                    <LoginModal />
+                  </Modal>
+                  <MobileMenu />
+                </Page>
+              }
+            />
 
-            {/* Modal for Sign-up */}
-            <Modal modal="sign-up">
-              <SignUpModal />
-            </Modal>
-
-            {/* Modal for Login */}
-            <Modal modal="login">
-              <LoginModal />
-            </Modal>
-
-            <MobileMenu />
-          </Page>
+            {/* Dashboard */}
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
         </MobileMenuContextProvider>
       </ModalContextProvider>
     </ClientWrapper>

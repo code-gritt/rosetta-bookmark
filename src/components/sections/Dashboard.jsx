@@ -1,6 +1,6 @@
-import { useAuthStore } from "../../store/useAuthStore";
 import { useEffect, useState } from "react";
-import API from "../../utils/api"; // Adjust path as needed
+import API from "../../utils/api";
+import useAuthStore from "../../store/useAuthStore";
 
 export default function Dashboard() {
   const { user } = useAuthStore();
