@@ -22,6 +22,7 @@ import { deepPurple } from "@mui/material/colors";
 
 export default function Dashboard() {
   const { user, token, logout, initialize } = useAuthStore();
+  const [authLoaded, setAuthLoaded] = useState(false); // Track auth initialization
   const [bookmarks, setBookmarks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,12 +43,15 @@ export default function Dashboard() {
   // Initialize auth on client
   useEffect(() => {
     initialize();
-  }, []);
+    setAuthLoaded(true);
+  }, [initialize]);
 
-  // Fetch bookmarks after user is loaded
+  // Fetch bookmarks after user and token are ready
   useEffect(() => {
     const fetchBookmarks = async () => {
       if (!token) return;
+      setLoading(true);
+      setError(null);
       try {
         const res = await API.get("/bookmarks/", {
           headers: { Authorization: `Token ${token}` },
@@ -60,8 +64,20 @@ export default function Dashboard() {
         setLoading(false);
       }
     };
-    fetchBookmarks();
-  }, [token]);
+
+    if (authLoaded && user) {
+      fetchBookmarks();
+    }
+  }, [authLoaded, user, token]);
+
+  // Wait until auth is initialized
+  if (!authLoaded) {
+    return (
+      <Container sx={{ mt: 5 }}>
+        <Typography>Loading...</Typography>
+      </Container>
+    );
+  }
 
   if (!user) {
     return (
