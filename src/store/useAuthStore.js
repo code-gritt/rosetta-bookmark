@@ -6,33 +6,29 @@ const useAuthStore = create((set) => ({
 
   setUser: (userData) => {
     const { token, email, userId } = userData;
-    localStorage.setItem("token", token);
+    localStorage.setItem("auth", JSON.stringify({ token, email, userId }));
     set({ user: { email, userId }, token });
-    console.log("User set:", { email, userId }); // Debug
+    console.log("User set:", { email, userId });
   },
 
   initialize: () => {
-    const savedToken = localStorage.getItem("token");
-    if (savedToken) {
-      // Attempt to restore user data (mock for now, adjust if you have a user object)
-      set({
-        token: savedToken,
-        user: {
-          email: localStorage.getItem("email") || "unknown",
-          userId: localStorage.getItem("userId") || "unknown",
-        },
-      });
-      console.log("Initialized with token:", savedToken);
+    if (typeof window === "undefined") return; // only run in client
+    const saved = localStorage.getItem("auth");
+    if (saved) {
+      try {
+        const { token, email, userId } = JSON.parse(saved);
+        set({ token, user: { email, userId } });
+        console.log("Initialized with token:", token);
+      } catch (err) {
+        console.error("Failed to parse auth from localStorage:", err);
+      }
     }
   },
 
   logout: () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("auth");
     set({ user: null, token: null });
   },
 }));
-
-// Initialize on app load
-useAuthStore.getState().initialize();
 
 export default useAuthStore;

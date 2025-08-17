@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import API from "../../utils/api";
-import useAuthStore from "../../store/useAuthStore";
 import { Link, useNavigate } from "react-router-dom";
-
-// MUI Components
+import useAuthStore from "../../store/useAuthStore";
+import API from "../../utils/api";
 import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   Avatar,
   Container,
   List,
@@ -24,7 +21,7 @@ import {
 import { deepPurple } from "@mui/material/colors";
 
 export default function Dashboard() {
-  const { user, logout } = useAuthStore();
+  const { user, token, logout, initialize } = useAuthStore();
   const [bookmarks, setBookmarks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,21 +30,27 @@ export default function Dashboard() {
   // Avatar menu state
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const handleAvatarClick = (event) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
 
+  const handleAvatarClick = (e) => setAnchorEl(e.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
   const handleLogout = () => {
     handleMenuClose();
     logout();
     navigate("/");
   };
 
+  // Initialize auth on client
+  useEffect(() => {
+    initialize();
+  }, []);
+
+  // Fetch bookmarks after user is loaded
   useEffect(() => {
     const fetchBookmarks = async () => {
-      if (!user?.token) return;
+      if (!token) return;
       try {
         const res = await API.get("/bookmarks/", {
-          headers: { Authorization: `Token ${user.token}` },
+          headers: { Authorization: `Token ${token}` },
         });
         setBookmarks(res.data);
       } catch (err) {
@@ -58,7 +61,7 @@ export default function Dashboard() {
       }
     };
     fetchBookmarks();
-  }, [user]);
+  }, [token]);
 
   if (!user) {
     return (
@@ -72,7 +75,6 @@ export default function Dashboard() {
 
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "#071717", color: "#fff" }}>
-      {/* Header / Navigation */}
       <AppBar position="static" sx={{ bgcolor: "#0e2e2e" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -107,7 +109,6 @@ export default function Dashboard() {
         </Toolbar>
       </AppBar>
 
-      {/* Main content */}
       <Container sx={{ mt: 5 }}>
         <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
           Your Bookmarks
