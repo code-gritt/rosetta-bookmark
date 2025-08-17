@@ -5,6 +5,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from .models import Bookmark
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -162,3 +164,85 @@ def bookmark_create(request):
         },
         status=status.HTTP_201_CREATED,
     )
+
+# New update endpoint
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def bookmark_update(request, pk):
+    """
+    Update an existing bookmark for the authenticated user.
+    """
+    try:
+        bookmark = Bookmark.objects.get(user=request.user, id=pk)
+        url = request.data.get("url")
+        title = request.data.get("title", "")
+
+        if not url:
+            return Response(
+                {"error": "URL is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Validate URL format
+        validator = URLValidator()
+        validator(url)
+
+        # Check for duplicate URL (excluding the current bookmark)
+        if Bookmark.objects.filter(user=request.user, url=url).exclude(id=pk).exists():
+            return Response(
+                {"error": "This URL is already bookmarked."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        bookmark.url = url
+        bookmark.title = title
+        bookmark.save()
+        return Response(
+            {
+                "id": bookmark.id,
+                "url": bookmark.url,
+                "title": bookmark.title,
+                "created_at": bookmark.created_at.isoformat(),
+            },
+            status=status.HTTP_200_OK,
+        )
+    except Bookmark.DoesNotExist:
+        return Response(
+            {"error": "Bookmark not found."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    except ValidationError:
+        return Response(
+            {"error": "Invalid URL format."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    except Exception as e:
+        return Response(
+            {"error": f"Failed to update bookmark: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+# New delete endpoint
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def bookmark_delete(request, pk):
+    """
+    Delete an existing bookmark for the authenticated user.
+    """
+    try:
+        bookmark = Bookmark.objects.get(user=request.user, id=pk)
+        bookmark.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except Bookmark.DoesNotExist:
+        return Response(
+            {"error": "Bookmark not found."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    except Exception as e:
+        return Response(
+            {"error": f"Failed to delete bookmark: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
