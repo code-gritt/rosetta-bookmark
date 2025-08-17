@@ -109,14 +109,6 @@ export default function Dashboard() {
 
       {/* Main content */}
       <Container sx={{ mt: 5 }}>
-        <Typography variant="h4" gutterBottom>
-          Dashboard
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-          Welcome, {user.email}!
-        </Typography>
-        <Typography gutterBottom>User ID: {user.userId}</Typography>
-
         <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
           Your Bookmarks
         </Typography>

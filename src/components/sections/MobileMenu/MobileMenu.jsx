@@ -6,18 +6,32 @@ import {
   Typography,
   IconButton,
   Stack,
-  Fade,
+  Menu,
+  MenuItem,
+  Avatar,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useModalContext } from "../../../contexts/ModalContext";
 import { useMobileMenuContext } from "../../../contexts/MobileMenuContext";
 import useAuthStore from "../../../store/useAuthStore";
 import { Link as RouterLink } from "react-router-dom";
+import { deepPurple } from "@mui/material/colors";
 
 export default function MobileMenu() {
   const { setActiveModal } = useModalContext();
   const { mobileMenuOpened, setMobileMenuOpened } = useMobileMenuContext();
   const { user, logout } = useAuthStore();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openAvatarMenu = Boolean(anchorEl);
+
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleAvatarClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleLogin = () => {
     setActiveModal("login");
@@ -29,6 +43,12 @@ export default function MobileMenu() {
     setMobileMenuOpened(false);
   };
 
+  const handleLogout = () => {
+    logout();
+    setMobileMenuOpened(false);
+    handleAvatarClose();
+  };
+
   return (
     <Drawer
       anchor="right"
@@ -37,7 +57,7 @@ export default function MobileMenu() {
       PaperProps={{
         sx: {
           width: 280,
-          bgcolor: "#061212", // primary-1400
+          bgcolor: "#061212",
           backgroundImage: "url('/src/assets/Noise.webp')",
           backgroundRepeat: "repeat",
           borderRadius: 3,
@@ -46,7 +66,7 @@ export default function MobileMenu() {
       }}
       BackdropProps={{
         sx: {
-          bgcolor: "rgba(6, 18, 18, 0.5)", // primary-1300/50
+          bgcolor: "rgba(6, 18, 18, 0.5)",
           backdropFilter: "blur(5px)",
         },
       }}
@@ -58,11 +78,11 @@ export default function MobileMenu() {
         height="100%"
       >
         {/* Close Button */}
-        <Box mb={2}>
+        <Box mb={3}>
           <IconButton
             onClick={() => setMobileMenuOpened(false)}
             sx={{
-              border: "2px solid #bfc5c9", // primary-75
+              border: "2px solid #bfc5c9",
               "&:hover": { bgcolor: "#bfc5c9" },
             }}
           >
@@ -74,43 +94,44 @@ export default function MobileMenu() {
         <Stack spacing={2}>
           {user ? (
             <>
-              <Typography color="white">{user.email}</Typography>
-              <Button
-                component={RouterLink}
-                to="/dashboard"
-                variant="contained"
-                sx={{
-                  bgcolor: "#44e5e7",
-                  color: "#061212",
-                  borderRadius: "9999px",
-                  "&:hover": { bgcolor: "#36b7b9" },
-                }}
+              <Box display="flex" alignItems="center" gap={1}>
+                <IconButton onClick={handleAvatarClick}>
+                  <Avatar sx={{ bgcolor: deepPurple[500] }}>
+                    {user.email[0].toUpperCase()}
+                  </Avatar>
+                </IconButton>
+                <Typography color="white">{user.email}</Typography>
+              </Box>
+
+              <Menu
+                anchorEl={anchorEl}
+                open={openAvatarMenu}
+                onClose={handleAvatarClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
               >
-                Dashboard
-              </Button>
-              <Button
-                onClick={logout}
-                variant="contained"
-                sx={{
-                  bgcolor: "#44e5e7",
-                  color: "#061212",
-                  borderRadius: "9999px",
-                  "&:hover": { bgcolor: "#36b7b9" },
-                }}
-              >
-                Logout
-              </Button>
+                <MenuItem
+                  component={RouterLink}
+                  to="/dashboard"
+                  onClick={handleAvatarClose}
+                >
+                  Dashboard
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
             </>
           ) : (
             <>
               <Button
                 onClick={handleLogin}
                 variant="outlined"
+                fullWidth
                 sx={{
                   borderColor: "#ecfcfd",
                   color: "#ecfcfd",
                   borderRadius: "9999px",
                   "&:hover": { bgcolor: "#ecfcfd", color: "#061212" },
+                  mb: 1,
                 }}
               >
                 Login
@@ -118,6 +139,7 @@ export default function MobileMenu() {
               <Button
                 onClick={handleGetStarted}
                 variant="contained"
+                fullWidth
                 sx={{
                   bgcolor: "#44e5e7",
                   color: "#061212",
