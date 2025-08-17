@@ -22,19 +22,6 @@ export default function Navigation() {
         </p>
       </a>
 
-      <ul className="flex items-center gap-x-8 max-xl:gap-x-6 max-lg:hidden">
-        {navigationLinks.map((link) => (
-          <li key={link.id}>
-            <a
-              href={link.href}
-              className="hover:text-primary-500 transition-properties"
-            >
-              {link.link}
-            </a>
-          </li>
-        ))}
-      </ul>
-
       <div className="flex items-center gap-x-3 max-lg:hidden">
         <button
           className="border-primary-50 transition-properties hover:bg-primary-50 hover:text-primary-1300 box-border cursor-pointer rounded-full border-2 px-8 py-3.5 text-lg/8 font-normal max-xl:px-6 max-xl:py-3 max-xl:text-base/loose"
