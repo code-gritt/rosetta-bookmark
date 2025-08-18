@@ -29,6 +29,7 @@ import { MobileMenuContextProvider } from "./contexts/MobileMenuContext";
 import ClientWrapper from "./components/client-wrapper";
 import { Routes, Route } from "react-router-dom"; // Import routing components
 import Dashboard from "./components/sections/Dashboard";
+import Pricing from "./components/sections/Pricing";
 
 function App() {
   return (
@@ -64,8 +65,8 @@ function App() {
               }
             />
 
-            {/* Dashboard */}
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/pricing" element={<Pricing />} />
           </Routes>
         </MobileMenuContextProvider>
       </ModalContextProvider>

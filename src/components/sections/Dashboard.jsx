@@ -28,6 +28,7 @@ import {
 import { deepPurple } from "@mui/material/colors";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Navigation from "./Navigation";
 
 export default function Dashboard() {
   const { user, token, logout, initialize } = useAuthStore();
@@ -108,27 +109,20 @@ export default function Dashboard() {
     setFormError(null);
 
     try {
-      let res;
-      if (newBookmark.id) {
-        res = await API.put(
-          `/bookmarks/${newBookmark.id}/update/`,
-          { url: newBookmark.url, title: newBookmark.title },
-          { headers: { Authorization: `Token ${token}` } },
-        );
-      } else {
-        res = await API.post(
-          "/bookmarks/create/",
-          { url: newBookmark.url, title: newBookmark.title },
-          { headers: { Authorization: `Token ${token}` } },
-        );
+      const res = await API.post(
+        "/bookmarks/create/",
+        { url: newBookmark.url, title: newBookmark.title },
+        { headers: { Authorization: `Token ${token}` } },
+      );
+      if (res.status === 402) {
+        navigate("/pricing");
+        return;
       }
-
       setBookmarks((prev) =>
         newBookmark.id
           ? prev.map((b) => (b.id === newBookmark.id ? res.data : b))
           : [...prev, res.data],
       );
-
       setShowForm(false);
       setNewBookmark({ id: null, url: "", title: "" });
     } catch (err) {
@@ -177,6 +171,10 @@ export default function Dashboard() {
         { urls },
         { headers: { Authorization: `Token ${token}` } },
       );
+      if (res.status === 402) {
+        navigate("/pricing");
+        return;
+      }
       setBookmarks([...bookmarks, ...res.data.bookmarks]);
       setShowBulkForm(false);
       setBulkUrls("");
@@ -215,39 +213,8 @@ export default function Dashboard() {
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "#071717", color: "#fff" }}>
       {/* Top AppBar */}
-      <AppBar position="static" sx={{ bgcolor: "#0e2e2e" }}>
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <Typography variant="h6">Rosetta</Typography>
-          </Link>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Avatar
-              sx={{ bgcolor: deepPurple[500], cursor: "pointer" }}
-              onClick={handleAvatarClick}
-            >
-              {user.email[0].toUpperCase()}
-            </Avatar>
-
-            <Menu
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleMenuClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
-            >
-              <Box sx={{ px: 2, py: 1 }}>
-                <Typography variant="subtitle1">{user.email}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  User ID: {user.userId}
-                </Typography>
-              </Box>
-              <Divider />
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </AppBar>
+      <Navigation />
 
       {/* Dashboard Content */}
       <Container sx={{ mt: 5 }}>

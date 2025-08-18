@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup_view, login_view, logout_view, bookmark_list, bookmark_create, bookmark_update, bookmark_delete, bookmark_bulk_create
+from .views import signup_view, login_view, logout_view, bookmark_list, bookmark_create, bookmark_update, bookmark_delete, bookmark_bulk_create, paypal_payment_callback, get_credits
 
 urlpatterns = [
     path('signup/', signup_view, name='signup'),
@@ -11,4 +11,8 @@ urlpatterns = [
     path("bookmarks/<int:pk>/delete/", bookmark_delete, name="bookmark-delete"),
     path("bookmarks/bulk-create/", bookmark_bulk_create,
          name="bookmark-bulk-create"),
+    path("api/paypal-callback/", paypal_payment_callback,
+         name="paypal-callback"),
+    path("credits/", get_credits, name="get-credits"),
+
 ]

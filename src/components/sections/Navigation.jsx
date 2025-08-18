@@ -18,11 +18,12 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { deepPurple } from "@mui/material/colors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import API from "../../utils/api";
 
 export default function Navigation() {
   const { setActiveModal } = useModalContext();
-  const { user, logout } = useAuthStore();
+  const { user, logout, token } = useAuthStore();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
@@ -37,6 +38,25 @@ export default function Navigation() {
     logout();
   };
 
+  // Credit state
+  const [credits, setCredits] = useState(0);
+
+  useEffect(() => {
+    const fetchCredits = async () => {
+      if (user && token) {
+        try {
+          const res = await API.get("/credits/", {
+            headers: { Authorization: `Token ${token}` },
+          });
+          setCredits(res.data.credits);
+        } catch (err) {
+          console.error("Failed to fetch credits:", err);
+        }
+      }
+    };
+    fetchCredits();
+  }, [user, token]);
+
   return (
     <AppBar position="static" sx={{ bgcolor: "#0e2e2e" }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -47,7 +67,26 @@ export default function Navigation() {
         </RouterLink>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          {/* Right Side */}
+          {user && (
+            <>
+              <Typography variant="body2" color="inherit">
+                Credits: {credits}
+              </Typography>
+              <Button
+                component={RouterLink}
+                to="/pricing"
+                variant="contained"
+                sx={{
+                  bgcolor: "#44e5e7",
+                  color: "#061212",
+                  "&:hover": { bgcolor: "#36b7b9" },
+                  borderRadius: "9999px",
+                }}
+              >
+                Pricing
+              </Button>
+            </>
+          )}
           {!isMobile && (
             <Stack direction="row" spacing={2} alignItems="center">
               {user ? (
@@ -65,7 +104,6 @@ export default function Navigation() {
                   >
                     Dashboard
                   </Button>
-                  {/* Avatar with dropdown */}
                   <Avatar
                     sx={{ bgcolor: deepPurple[500], cursor: "pointer" }}
                     onClick={handleAvatarClick}
@@ -128,7 +166,6 @@ export default function Navigation() {
             </Stack>
           )}
 
-          {/* Mobile Menu Icon */}
           {isMobile && <MobileMenuIcon />}
         </Box>
       </Toolbar>
