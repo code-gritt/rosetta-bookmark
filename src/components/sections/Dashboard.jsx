@@ -369,11 +369,20 @@ export default function Dashboard() {
                     alignItems: "center",
                   }}
                 >
-                  <ListItem sx={{ px: 0, flexGrow: 1 }}>
+                  <ListItem
+                    disableGutters
+                    disablePadding
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      px: 0,
+                    }}
+                  >
                     <ListItemText
                       primary={
                         <Typography
-                          variant="h6"
+                          variant="h8"
                           component="a"
                           href={bookmark.url}
                           target="_blank"
@@ -381,6 +390,10 @@ export default function Dashboard() {
                           sx={{
                             color: "#fff",
                             textDecoration: "none",
+                            display: "block",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap", // keeps it in one line with ellipsis
                             "&:hover": { textDecoration: "underline" },
                           }}
                         >
@@ -388,7 +401,16 @@ export default function Dashboard() {
                         </Typography>
                       }
                       secondary={
-                        <Typography variant="body2" sx={{ color: "#ddd" }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "#ddd",
+                            display: "block",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
                           {bookmark.url}
                         </Typography>
                       }
