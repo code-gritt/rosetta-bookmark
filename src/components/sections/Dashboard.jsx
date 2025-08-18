@@ -36,10 +36,15 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Bulk form state
   const [showBulkForm, setShowBulkForm] = useState(false);
   const [bulkUrls, setBulkUrls] = useState("");
 
-  // Bookmark form state
+  // Single bookmark form state
   const [showForm, setShowForm] = useState(false);
   const [newBookmark, setNewBookmark] = useState({
     id: null,
@@ -49,7 +54,7 @@ export default function Dashboard() {
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState(null);
 
-  // Avatar menu state
+  // Avatar menu
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -67,7 +72,7 @@ export default function Dashboard() {
     setAuthLoaded(true);
   }, [initialize]);
 
-  // Fetch bookmarks once on mount
+  // Fetch bookmarks
   useEffect(() => {
     const fetchBookmarks = async () => {
       if (!token) return;
@@ -107,34 +112,22 @@ export default function Dashboard() {
       if (newBookmark.id) {
         res = await API.put(
           `/bookmarks/${newBookmark.id}/update/`,
-          {
-            url: newBookmark.url,
-            title: newBookmark.title,
-          },
-          {
-            headers: { Authorization: `Token ${token}` },
-          },
+          { url: newBookmark.url, title: newBookmark.title },
+          { headers: { Authorization: `Token ${token}` } },
         );
       } else {
         res = await API.post(
           "/bookmarks/create/",
-          {
-            url: newBookmark.url,
-            title: newBookmark.title,
-          },
-          {
-            headers: { Authorization: `Token ${token}` },
-          },
+          { url: newBookmark.url, title: newBookmark.title },
+          { headers: { Authorization: `Token ${token}` } },
         );
       }
 
-      setBookmarks((prev) => {
-        if (newBookmark.id) {
-          return prev.map((b) => (b.id === newBookmark.id ? res.data : b));
-        } else {
-          return [...prev, res.data];
-        }
-      });
+      setBookmarks((prev) =>
+        newBookmark.id
+          ? prev.map((b) => (b.id === newBookmark.id ? res.data : b))
+          : [...prev, res.data],
+      );
 
       setShowForm(false);
       setNewBookmark({ id: null, url: "", title: "" });
@@ -174,15 +167,7 @@ export default function Dashboard() {
     }
   };
 
-  // Render loading/auth states
-  if (!authLoaded) {
-    return (
-      <Container sx={{ mt: 5 }}>
-        <Typography>Loading...</Typography>
-      </Container>
-    );
-  }
-
+  // Bulk submit
   const handleBulkSubmit = async () => {
     if (!bulkUrls) return;
     try {
@@ -190,9 +175,7 @@ export default function Dashboard() {
       const res = await API.post(
         "/bookmarks/bulk-create/",
         { urls },
-        {
-          headers: { Authorization: `Token ${token}` },
-        },
+        { headers: { Authorization: `Token ${token}` } },
       );
       setBookmarks([...bookmarks, ...res.data.bookmarks]);
       setShowBulkForm(false);
@@ -202,6 +185,22 @@ export default function Dashboard() {
       console.error(err);
     }
   };
+
+  // Filter bookmarks by search
+  const filteredBookmarks = bookmarks.filter(
+    (b) =>
+      b.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      b.url.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  // Render loading/auth states
+  if (!authLoaded) {
+    return (
+      <Container sx={{ mt: 5 }}>
+        <Typography>Loading...</Typography>
+      </Container>
+    );
+  }
 
   if (!user) {
     return (
@@ -215,6 +214,7 @@ export default function Dashboard() {
 
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "#071717", color: "#fff" }}>
+      {/* Top AppBar */}
       <AppBar position="static" sx={{ bgcolor: "#0e2e2e" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -249,30 +249,49 @@ export default function Dashboard() {
         </Toolbar>
       </AppBar>
 
+      {/* Dashboard Content */}
       <Container sx={{ mt: 5 }}>
+        {/* Top controls with search + buttons */}
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             mb: 2,
+            gap: 2,
+            flexWrap: "wrap",
           }}
         >
           <Typography variant="h6">Your Bookmarks</Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => setShowForm(true)}
-          >
-            Add Bookmark
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => setShowBulkForm(true)}
-          >
-            Bulk Add Bookmarks
-          </Button>
+
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+            <TextField
+              variant="outlined"
+              size="small"
+              placeholder="Search bookmarks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              sx={{
+                bgcolor: "#fff",
+                borderRadius: 1,
+                minWidth: "200px",
+              }}
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => setShowForm(true)}
+            >
+              Add Bookmark
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => setShowBulkForm(true)}
+            >
+              Bulk Add
+            </Button>
+          </Box>
         </Box>
 
         {/* Bookmark Form Dialog */}
@@ -323,6 +342,7 @@ export default function Dashboard() {
           </DialogActions>
         </Dialog>
 
+        {/* Bulk Add Dialog */}
         <Dialog open={showBulkForm} onClose={() => setShowBulkForm(false)}>
           <DialogTitle>Add Multiple Bookmarks</DialogTitle>
           <DialogContent>
@@ -352,8 +372,8 @@ export default function Dashboard() {
           </Box>
         ) : error ? (
           <Typography color="error">{error}</Typography>
-        ) : bookmarks.length === 0 ? (
-          <Typography>No bookmarks yet.</Typography>
+        ) : filteredBookmarks.length === 0 ? (
+          <Typography>No matching bookmarks.</Typography>
         ) : (
           <List
             sx={{
@@ -362,7 +382,7 @@ export default function Dashboard() {
               gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
             }}
           >
-            {bookmarks.map((bookmark) => (
+            {filteredBookmarks.map((bookmark) => (
               <Paper
                 key={bookmark.id}
                 sx={{
