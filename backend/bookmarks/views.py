@@ -7,6 +7,9 @@ from rest_framework.authtoken.models import Token
 from .models import Bookmark
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+import requests
+from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
 
 User = get_user_model()
 
@@ -17,10 +20,7 @@ User = get_user_model()
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def signup_view(request):
-    """
-    Register a new user with email + password.
-    Returns an auth token.
-    """
+    """Register a new user with email + password. Returns an auth token."""
     email = request.data.get("email")
     password = request.data.get("password")
 
@@ -38,8 +38,7 @@ def signup_view(request):
 
     try:
         user = User.objects.create_user(
-            username=email, email=email, password=password
-        )
+            username=email, email=email, password=password)
         login(request, user)
         token, _ = Token.objects.get_or_create(user=user)
 
@@ -62,9 +61,7 @@ def signup_view(request):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login_view(request):
-    """
-    Authenticate user and return a token.
-    """
+    """Authenticate user and return a token."""
     email = request.data.get("email")
     password = request.data.get("password")
 
@@ -99,9 +96,7 @@ def login_view(request):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def logout_view(request):
-    """
-    Logout user and delete auth token.
-    """
+    """Logout user and delete auth token."""
     try:
         request.user.auth_token.delete()
         logout(request)
@@ -122,18 +117,11 @@ def logout_view(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def bookmark_list(request):
-    """
-    List bookmarks of the authenticated user.
-    """
+    """List bookmarks of the authenticated user."""
     bookmarks = Bookmark.objects.filter(
         user=request.user).order_by("-created_at")
     data = [
-        {
-            "id": b.id,
-            "url": b.url,
-            "title": b.title,
-            "created_at": b.created_at,
-        }
+        {"id": b.id, "url": b.url, "title": b.title, "created_at": b.created_at}
         for b in bookmarks
     ]
     return Response(data, status=status.HTTP_200_OK)
@@ -142,9 +130,7 @@ def bookmark_list(request):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def bookmark_create(request):
-    """
-    Create a new bookmark for the authenticated user.
-    """
+    """Create a new bookmark for the authenticated user."""
     url = request.data.get("url")
     title = request.data.get("title", "")
 
@@ -165,15 +151,11 @@ def bookmark_create(request):
         status=status.HTTP_201_CREATED,
     )
 
-# New update endpoint
-
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def bookmark_update(request, pk):
-    """
-    Update an existing bookmark for the authenticated user.
-    """
+    """Update an existing bookmark for the authenticated user."""
     try:
         bookmark = Bookmark.objects.get(user=request.user, id=pk)
         url = request.data.get("url")
@@ -189,7 +171,7 @@ def bookmark_update(request, pk):
         validator = URLValidator()
         validator(url)
 
-        # Check for duplicate URL (excluding the current bookmark)
+        # Prevent duplicate bookmarks
         if Bookmark.objects.filter(user=request.user, url=url).exclude(id=pk).exists():
             return Response(
                 {"error": "This URL is already bookmarked."},
@@ -225,13 +207,10 @@ def bookmark_update(request, pk):
         )
 
 
-# New delete endpoint
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def bookmark_delete(request, pk):
-    """
-    Delete an existing bookmark for the authenticated user.
-    """
+    """Delete an existing bookmark for the authenticated user."""
     try:
         bookmark = Bookmark.objects.get(user=request.user, id=pk)
         bookmark.delete()
@@ -246,3 +225,58 @@ def bookmark_delete(request, pk):
             {"error": f"Failed to delete bookmark: {str(e)}"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+
+
+def fetch_title(url):
+    try:
+        response = requests.get(url, timeout=5)
+        soup = BeautifulSoup(response.text, "html.parser")
+        return soup.title.string.strip() if soup.title else ""
+    except Exception:
+        return ""
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def bookmark_bulk_create(request):
+    """Create multiple bookmarks at once, fetching titles in parallel."""
+    urls = request.data.get("urls", [])
+    if not urls:
+        return Response(
+            {"error": "At least one URL is required."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    # Validate URLs
+    validator = URLValidator()
+    for url in urls:
+        try:
+            validator(url)
+        except ValidationError:
+            return Response(
+                {"error": f"Invalid URL format: {url}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    # Parallel title fetching with threads (safe in Django)
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        titles = list(executor.map(fetch_title, urls))
+
+    created_bookmarks = []
+    for url, title in zip(urls, titles):
+        bookmark = Bookmark.objects.create(
+            user=request.user, url=url, title=title)
+        created_bookmarks.append(
+            {
+                "id": bookmark.id,
+                "url": bookmark.url,
+                "title": bookmark.title,
+                "created_at": bookmark.created_at.isoformat(),
+            }
+        )
+
+    return Response(
+        {"message": "Bookmarks created successfully.",
+            "bookmarks": created_bookmarks},
+        status=status.HTTP_201_CREATED,
+    )

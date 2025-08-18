@@ -36,6 +36,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [showBulkForm, setShowBulkForm] = useState(false);
+  const [bulkUrls, setBulkUrls] = useState("");
 
   // Bookmark form state
   const [showForm, setShowForm] = useState(false);
@@ -181,6 +183,26 @@ export default function Dashboard() {
     );
   }
 
+  const handleBulkSubmit = async () => {
+    if (!bulkUrls) return;
+    try {
+      const urls = bulkUrls.split(",").map((u) => u.trim());
+      const res = await API.post(
+        "/bookmarks/bulk-create/",
+        { urls },
+        {
+          headers: { Authorization: `Token ${token}` },
+        },
+      );
+      setBookmarks([...bookmarks, ...res.data.bookmarks]);
+      setShowBulkForm(false);
+      setBulkUrls("");
+    } catch (err) {
+      setError("Failed to add bulk bookmarks.");
+      console.error(err);
+    }
+  };
+
   if (!user) {
     return (
       <Container sx={{ mt: 5 }}>
@@ -244,6 +266,13 @@ export default function Dashboard() {
           >
             Add Bookmark
           </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setShowBulkForm(true)}
+          >
+            Bulk Add Bookmarks
+          </Button>
         </Box>
 
         {/* Bookmark Form Dialog */}
@@ -290,6 +319,28 @@ export default function Dashboard() {
               ) : (
                 "Add"
               )}
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={showBulkForm} onClose={() => setShowBulkForm(false)}>
+          <DialogTitle>Add Multiple Bookmarks</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="URLs (comma-separated)"
+              type="text"
+              fullWidth
+              value={bulkUrls}
+              onChange={(e) => setBulkUrls(e.target.value)}
+              helperText="e.g., https://example.com, https://test.com"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowBulkForm(false)}>Cancel</Button>
+            <Button onClick={handleBulkSubmit} color="primary">
+              Add
             </Button>
           </DialogActions>
         </Dialog>
