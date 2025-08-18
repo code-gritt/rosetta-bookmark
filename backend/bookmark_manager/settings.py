@@ -9,12 +9,13 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- Security ---
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "your-secret-key-here")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY",
+                       "$3g+dwu-=q88fm9!@fe%gjxssm7pnl!&s#la1q6r=xr)0(90sg")
 DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "your-backend.onrender.com",
+    "rosetta-bookmark-2.onrender.com",
 ]
 
 # --- Installed Apps ---
@@ -119,6 +120,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Corrected port for your React dev server
     "https://rosetta-bookmark.vercel.app",
+    "https://rosetta-bookmark-2.onrender.com",
 ]
 
 # --- Custom User ---
